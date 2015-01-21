@@ -16,5 +16,11 @@ int main()
 	{
 		std::cout << username << "@" << hostname << "$";
 		getline(std::cin,input);
+		if(input == "exit") exit = true;
+		else
+		{
+			
+		}
 	}
+	return 0;
 }
