@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <vector>
+#include <queue>
 
 int main()
 {
@@ -17,13 +18,28 @@ int main()
 	{
 		std::cout << username << "@" << hostname << "$"; //output beg
 		getline(std::cin,input);			//get input
-		char *tok = strtok(const_cast<char*>(input.c_str())," &|;"); //will break the words if not &,|,;
-		std::vector<char*> commands;				     //vector to store the commands
+		std::queue<char> connector;			//queue of connector
+		
+		for(int i = 0;i < input.size();i++)
+		{
+			if(input[i].compare(";")== 0) connector.push(';');
+		}		
+
+		char *tok = strtok(const_cast<char*>(input.c_str()),";&|"); //will break the words if not a space
+		std::queue<char*> commands;				     //queue to store the commands
 		while(tok != NULL)					     //loop till end
 		{
-			commands.push_back(tok);
-			tok = strtok(NULL," &|;");
-		}		
+			commands.push(tok);
+			tok = strtok(NULL,";&|");
+		}
+	/*	while(commands.size() > 0)				    //loop through the words
+		{
+			char* theWord = commands.front();		    //get the word
+			for(int i = 0;i < theWord.size();i++)
+			{
+				if(
+			}
+		}*/	
 	}
 	return 0;
 }
