@@ -6,41 +6,99 @@
 #include <vector>
 #include <queue>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+
+
+bool syscalls(std::vector<std::string> command)
+{
+	char **argv = new char*[command.size()+1];		//make argv pointer pointer for execvp. +1 in size since need \0
+	for(int a = 0;a < command.size();a++)			//shove everything in command into argv
+	{
+		argv[i] = command[i];
+	}
+	argv[argv.size()-1] = "\0";
+	//now argv has everything in command including \0 ending
+	
+	int pid = fork();
+	if(pid < 0){
+		perror("error with fork(child)");
+		exit(1);
+	}
+	else if(pid == 0){		//child process running
+		std::cout << "Inside child process ";
+		if(-1 == execvp(argv[0],argv))
+			perror("There was an error in execvp. ");
+		exit(1);		//kill child
+	}
+	else{ 				//in parent
+		if(wait(0) == -1){
+			perror("error with wait");
+			exit(1);
+		}
+	}
+	//parent function here
+}
+
 int main()
 {
 	std::string input;		//string value to get input
-	char hostname[128];		//get the hostname from terminal
-	char username[128];		//get username from terminal
-	gethostname(hostname,128);
-	getlogin_r(username,128);
-	while(1)			//run until exit(0)
+	char hostname[100];		//get the hostname from terminal
+	char username[100];		//get username from terminal
+	gethostname(hostname,100);
+	getlogin_r(username,100);
+	while(1)			//run until exit(1)
 	{
 		std::cout << username << "@" << hostname << "$"; //output beg
 		getline(std::cin,input);			//get input
-		std::queue<char> connector;			//queue of connector
 		
-		char *tok = strtok(const_cast<char*>(input.c_str()),";&|"); //will break the words if not a space
-		std::queue<char*> commands;				     //queue to store the commands
+		char *tok = strtok(const_cast<char*>(input.c_str())," "); //will break the words if not a space
+		std::vector<char*> commands;				     //vector to store the commands
 		while(tok != NULL)					     //loop till end
 		{
-			commands.push(tok);
-			tok = strtok(NULL,";&|");
+			commands.push_back(tok);
+			tok = strtok(NULL," ");
 		}
 
-		if(commands.top() == "exit")
-			exit(0);
-		else
+		for(int i = 0; i < commands.size();i++)			//loop through entire vector
 		{
-			shellstart();	
-		}
-	/*	while(commands.size() > 0)				    //loop through the words
-		{
-			char* theWord = commands.front();		    //get the word
-			for(int i = 0;i < theWord.size();i++)
+			bool prevCommand = false;
+			std::vector<std::string> chainCom;			//vector with a chain of commands for argv. String too hard
+			std::string convtStr = commands.at(i);			//convert to string to use
+			if(convtStr.find("exit") != std::string::npos)	//exit when find "exit"
+				exit(0);
+			else
 			{
-				if(
+				if(convtStr.find(";") != std::string::npos)	//found connector ;
+				{
+					int place = convtStr.find(";");
+					if(place > 0){
+						convtStr = convtStr.substr(0,place);
+						chainCom.push_back(convtStr);
+					}
+						
+					prevCommand = syscalls(chainCom);
+					chainCom.clear();	
+				}
+				else if(convtStr.find("&&") != std::string::npos)	//found connector &&
+				{
+					
+				}
+				else if(convtStr.find("||") != std::string::npos)	//found connector ||
+				{
+			
+				}
+				else if(convtStr.find("#") != std::string::npos)	//its all comments
+				{
+					
+				}
+				else							//no connectors
+				{
+					chainCom.push_back(convtStr);			//add commands until ;&| found
+				}	
 			}
-		}*/	
+		}
 	}
 	return 0;
 }
