@@ -41,6 +41,14 @@ bool syscalls(std::vector<char*> command)
 	//parent function here
 }
 
+//adds spaces after every connector and takes out comments as well
+void addSpaces(std::string &inputs)
+{
+	for(int x = 0;x < inputs.size();++x)
+	{
+		
+	}
+}
 int main()
 {
 	std::string input;		//string value to get input
@@ -53,6 +61,8 @@ int main()
 		std::cout << username << "@" << hostname << "$"; //output beg
 		getline(std::cin,input);			//get input
 		
+		addSpaces(input);
+	
 		char *tok = strtok(const_cast<char*>(input.c_str())," "); //will break the words if not a space
 		std::vector<char*> commands;				     //vector to store the commands
 		while(tok != NULL)					     //loop till end
