@@ -141,20 +141,21 @@ int main()
 				}
 				else if(convtStr.compare("&&") == 0 && chainCom.size() != 0)	//found connector &&
 				{
-					if(prevCommand)
+					if(!prevCommand)
 						prevCommand = syscalls(chainCom);
 					chainCom.clear();
 				}
 				else if(convtStr.compare("||") == 0 && chainCom.size() != 0)	//found connector ||
 				{
-					if(!prevCommand)
+					if(prevCommand)
 						prevCommand = syscalls(chainCom);
 					chainCom.clear();
 				}
 				else							//no connectors
 				{
 					chainCom.push_back(commands[i]);			//add commands until ;&| found
-					if(
+					if(commands.size() == i+1)
+						prevCommand = syscalls(chainCom);
 				}	
 			}
 		}
