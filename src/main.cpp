@@ -41,14 +41,66 @@ bool syscalls(std::vector<char*> command)
 	//parent function here
 }
 
-//adds spaces after every connector and takes out comments as well
+//adds spaces before and  after every connector and takes out comments as well
 void addSpaces(std::string &inputs)
 {
-	for(int x = 0;x < inputs.size();++x)
+	//find #
+	int temp = 0;
+	int x = 0;
+	temp = inputs.find("#");
+	if(temp > 0)
+		inputs.erase(temp);
+	//find ;
+	temp = 0;
+	x = 0;
+	while(temp < inputs.size())
 	{
-		
+		if(temp == 0)
+			temp = inputs.find(";");
+		else
+			temp = inputs.find(";",temp+1,1);
+
+		if(temp != std::string::npos && x!=temp )
+		{
+			inputs.replace(temp,1," ; ");
+			x = temp+1;
+		}
 	}
+	
+	//find &&
+	temp = 0;
+	x = 0;
+	while(temp < inputs.size())
+	{
+		if(temp == 0)
+			temp = inputs.find("&&");
+                else
+                        temp = inputs.find("&&",temp+2,2);
+
+                if(temp != std::string::npos && x!=temp)
+                {
+                        inputs.replace(temp,2," && ");
+                        x = temp+2;
+                }
+        }
+	//find ||
+	temp = 0;
+        x = 0;
+        while(temp < inputs.size())
+        {
+                if(temp == 0)
+                        temp = inputs.find("||");
+                else
+                        temp = inputs.find("||",temp+2,2);
+
+                if(temp != std::string::npos && x!=temp)
+                {
+                        inputs.replace(temp,2," || ");
+                        x = temp+2;
+                }
+        }
 }
+
 int main()
 {
 	std::string input;		//string value to get input
@@ -70,43 +122,39 @@ int main()
 			commands.push_back(tok);
 			tok = strtok(NULL," ");
 		}
+		
+		//commands has all the words in vector of char*
 
+		bool prevCommand = false;
+		std::vector<char*> chainCom;	
 		for(int i = 0; i < commands.size();i++)			//loop through entire vector
 		{
-			bool prevCommand = false;
-			std::vector<char*> chainCom;			//vector with a chain of commands for argv. String too hard
-			std::string convtStr = commands.at(i);			//convert to string to use
-			if(convtStr.find("exit") != std::string::npos)	//exit when find "exit"
-				exit(0);
+			std::string convtStr = commands.at(i); //convert to string to use
+			if(convtStr.compare("exit") == 0)	//exit when find "exit"
+				exit(1);
 			else
 			{
-				if(convtStr.find(";") != std::string::npos)	//found connector ;
+				if(convtStr.compare(";")==0 && chainCom.size() != 0)	//found connector ;
 				{
-					int place = convtStr.find(";");
-					if(place > 0){
-						convtStr = convtStr.substr(0,place);
-						chainCom.push_back(commands[i]);
-					}
-						
 					prevCommand = syscalls(chainCom);
-					chainCom.clear();	
+					chainCom.clear();						
 				}
-				else if(convtStr.find("&&") != std::string::npos)	//found connector &&
+				else if(convtStr.compare("&&") == 0 && chainCom.size() != 0)	//found connector &&
 				{
-					
+					if(prevCommand)
+						prevCommand = syscalls(chainCom);
+					chainCom.clear();
 				}
-				else if(convtStr.find("||") != std::string::npos)	//found connector ||
+				else if(convtStr.compare("||") == 0 && chainCom.size() != 0)	//found connector ||
 				{
-			
-				}
-				else if(convtStr.find("#") != std::string::npos)	//its all comments
-				{
-					
+					if(!prevCommand)
+						prevCommand = syscalls(chainCom);
+					chainCom.clear();
 				}
 				else							//no connectors
 				{
 					chainCom.push_back(commands[i]);			//add commands until ;&| found
-					prevCommand = syscalls(chainCom);
+					if(
 				}	
 			}
 		}
