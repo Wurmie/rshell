@@ -11,16 +11,16 @@
 #include <stdlib.h>
 
 
-bool syscalls(std::vector<std::string> command)
+bool syscalls(std::vector<char*> command)
 {
-	char **argv = new char*[command.size()+1];		//make argv pointer pointer for execvp. +1 in size since need \0
-	for(int a = 0;a < command.size();a++)			//shove everything in command into argv
+	int argc = command.size()+1;				//size of argv
+	char **argv = new char*[argc];			//make argv pointer pointer for execvp.
+	for(int a = 0;a < argc-1;a++)			//shove everything in command into argv
 	{
-		argv[i] = command[i];
+		argv[a] = command[a];
 	}
-	argv[argv.size()-1] = "\0";
-	//now argv has everything in command including \0 ending
-	
+	argv[argc-1] = '\0';	
+	//now argv has everything in command	
 	int pid = fork();
 	if(pid < 0){
 		perror("error with fork(child)");
@@ -64,7 +64,7 @@ int main()
 		for(int i = 0; i < commands.size();i++)			//loop through entire vector
 		{
 			bool prevCommand = false;
-			std::vector<std::string> chainCom;			//vector with a chain of commands for argv. String too hard
+			std::vector<char*> chainCom;			//vector with a chain of commands for argv. String too hard
 			std::string convtStr = commands.at(i);			//convert to string to use
 			if(convtStr.find("exit") != std::string::npos)	//exit when find "exit"
 				exit(0);
@@ -75,7 +75,7 @@ int main()
 					int place = convtStr.find(";");
 					if(place > 0){
 						convtStr = convtStr.substr(0,place);
-						chainCom.push_back(convtStr);
+						chainCom.push_back(commands[i]);
 					}
 						
 					prevCommand = syscalls(chainCom);
@@ -95,7 +95,8 @@ int main()
 				}
 				else							//no connectors
 				{
-					chainCom.push_back(convtStr);			//add commands until ;&| found
+					chainCom.push_back(commands[i]);			//add commands until ;&| found
+					prevCommand = syscalls(chainCom);
 				}	
 			}
 		}
