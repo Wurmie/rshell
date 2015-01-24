@@ -11,11 +11,11 @@
 >bin/rshell
 ##Prerequisites
 >Need to run the program:
-	*Linux
-	*g++
-	*vim
+>	*Linux
+>	*g++
+>	*vim
 ##Bugs/Limitations/Issues
 >
 ##Things not to do
 >Does not do
-	*anything but ls,echo will give an error
+>	*anything but ls,echo will give an error
