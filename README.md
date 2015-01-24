@@ -25,6 +25,8 @@ Need to run the program:
 	* vim
 
 ##Bugs/Limitations/Issues
+	* # do not work when appended to other characters
+	* tab does not work sometimes
 ##Things not to do
 Does not do
 

@@ -1,0 +1,107 @@
+Script started on Fri 23 Jan 2015 09:51:17 PM PST
+~
+wlee030@hammer $ cd rshell
+~/rshell
+wlee030@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+~/rshell
+wlee030@hammer $ r[Kbin/rshell
+wlee030@hammer.cs.ucr.edu$ls #testing ls
+bin  exec.script  LICENSE  Makefile  README.md	src  test
+wlee030@hammer.cs.ucr.edu$ls -ls      ls 0 -l
+total 20
+drwx------ 2 wlee030 classes 4096 Jan 23 21:48 bin
+-rw------- 1 wlee030 classes    0 Jan 23 21:48 exec.script
+-rw------- 1 wlee030 classes    0 Jan 22 14:19 LICENSE
+-rw------- 1 wlee030 classes  307 Jan 23 20:38 Makefile
+-rw------- 1 wlee030 classes  787 Jan 23 21:44 README.md
+drwx------ 2 wlee030 classes 4096 Jan 23 21:46 src
+drwx------ 2 wlee030 classes 4096 Jan 23 15:14 test
+ls wlee030@hammer.cs.ucr.edu$ls		-l
+There was an error in execvp. : No such file or directory
+Inside child process wlee030@hammer.cs.ucr.edu$ls -l -l -l -l
+total 20
+drwx------ 2 wlee030 classes 4096 Jan 23 21:48 bin
+-rw------- 1 wlee030 classes    0 Jan 23 21:48 exec.script
+-rw------- 1 wlee030 classes    0 Jan 22 14:19 LICENSE
+-rw------- 1 wlee030 classes  307 Jan 23 20:38 Makefile
+-rw------- 1 wlee030 classes  787 Jan 23 21:44 README.md
+drwx------ 2 wlee030 classes 4096 Jan 23 21:46 src
+drwx------ 2 wlee030 classes 4096 Jan 23 15:14 test
+ls ls -l ls -l -l ls -l -l -l wlee030@hammer.cs.ucr.edu$ls -l l1  -1 l	-l
+ls: invalid option -- '	'
+Try `ls --help' for more information.
+ls ls -l wlee030@hammer.cs.ucr.edu$-l ls
+There was an error in execvp. : No such file or directory
+-l Inside child process -l wlee030@hammer.cs.ucr.edu$bad
+There was an error in execvp. : No such file or directory
+Inside child process wlee030@hammer.cs.ucr.edu$ls bad
+ls: cannot access bad: No such file or directory
+ls wlee030@hammer.cs.ucr.edu$ ls -a
+.  ..  bin  exec.script  .git  LICENSE	Makefile  README.md  src  test
+ls wlee030@hammer.cs.ucr.edu$ls      
+bin  exec.script  LICENSE  Makefile  README.md	src  test
+wlee030@hammer.cs.ucr.edu$;
+^C
+~/rshell
+wlee030@hammer $ tue=[K[K[Kre[Kue ; ls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ false ; ls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ true || ls
+~/rshell
+wlee030@hammer $ false  || ls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ false[K[K[K[K[Ktrue &&  ls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ false && ls
+~/rshell
+wlee030@hammer $ true; ls -a
+[0m[01;34m.[0m/  [01;34m..[0m/  [01;34mbin[0m/  exec.script  [01;34m.git[0m/  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ false[K[K[K[K[Ktrue    ;ls -a
+[0m[01;34m.[0m/  [01;34m..[0m/  [01;34mbin[0m/  exec.script  [01;34m.git[0m/  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ true  ;ls[K[K
+Display all 2878 possibilities? (y or n)
+~/rshell
+wlee030@hammer $ true  ; [Kls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $  true &&false || true; ls || ls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ ls#ls
+bash: ls#ls: command not found
+~/rshell
+wlee030@hammer $ ls# ls
+bash: ls#: command not found
+~/rshell
+wlee030@hammer $ ls #ls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $  #ls
+~/rshell
+wlee030@hammer $ #ls 
+~/rshell
+wlee030@hammer $ ls; ls && false || ls# ;ls
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[mbash: ls#: command not found
+[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
+[m~/rshell
+wlee030@hammer $ ls;&&||ls
+bash: syntax error near unexpected token `;&'
+~/rshell
+wlee030@hammer $ ls||||||ls
+bash: syntax error near unexpected token `||'
+~/rshell
+wlee030@hammer $ exit[K[K[K[Kexit[K[K[K[Kexit
+exit
+
+Script done on Fri 23 Jan 2015 10:40:54 PM PST
