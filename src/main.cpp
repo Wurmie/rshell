@@ -38,6 +38,7 @@ bool syscalls(std::vector<char*> command)
 			exit(1);
 		}
 	}
+	return false;
 	//parent function here
 }
 
@@ -45,11 +46,14 @@ bool syscalls(std::vector<char*> command)
 void addSpaces(std::string &inputs)
 {
 	//find #
-	int temp = 0;
-	int x = 0;
-	temp = inputs.find("#");
-	if(temp > 0)
-		inputs.erase(temp);
+	size_t x = 0;
+	size_t temp = inputs.find("#");
+	if(temp > 1)
+	{
+		inputs = inputs.substr(0,temp);
+	}
+	else if(temp == 1)
+		inputs = " ";
 	//find ;
 	temp = 0;
 	x = 0;
@@ -127,7 +131,7 @@ int main()
 
 		bool prevCommand = false;
 		std::vector<char*> chainCom;	
-		for(int i = 0; i < commands.size();i++)			//loop through entire vector
+		for(size_t i = 0; i < commands.size();i++)			//loop through entire vector
 		{
 			std::string convtStr = commands.at(i); //convert to string to use
 			if(convtStr.compare("exit") == 0)	//exit when find "exit"
