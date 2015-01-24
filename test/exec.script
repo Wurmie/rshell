@@ -1,15 +1,18 @@
 Script started on Fri 23 Jan 2015 09:51:17 PM PST
-~
+~
+
 wlee030@hammer $ cd rshell
-~/rshell
+~/rshell
+
 wlee030@hammer $ make
 mkdir -p ./bin
 g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
-~/rshell
+~/rshell
+
 wlee030@hammer $ r[Kbin/rshell
-wlee030@hammer.cs.ucr.edu$ls #testing ls
+wlee030@hammer.cs.ucr.edu$ls                                  #testing ls
 bin  exec.script  LICENSE  Makefile  README.md	src  test
-wlee030@hammer.cs.ucr.edu$ls -ls      ls 0 -l
+wlee030@hammer.cs.ucr.edu$ls -ls      ls 0 -l   #testing with spaces
 total 20
 drwx------ 2 wlee030 classes 4096 Jan 23 21:48 bin
 -rw------- 1 wlee030 classes    0 Jan 23 21:48 exec.script
@@ -18,7 +21,7 @@ drwx------ 2 wlee030 classes 4096 Jan 23 21:48 bin
 -rw------- 1 wlee030 classes  787 Jan 23 21:44 README.md
 drwx------ 2 wlee030 classes 4096 Jan 23 21:46 src
 drwx------ 2 wlee030 classes 4096 Jan 23 15:14 test
-ls wlee030@hammer.cs.ucr.edu$ls		-l
+ls wlee030@hammer.cs.ucr.edu$ls		-l                          #testing with tabs
 There was an error in execvp. : No such file or directory
 Inside child process wlee030@hammer.cs.ucr.edu$ls -l -l -l -l
 total 20
@@ -29,79 +32,99 @@ drwx------ 2 wlee030 classes 4096 Jan 23 21:48 bin
 -rw------- 1 wlee030 classes  787 Jan 23 21:44 README.md
 drwx------ 2 wlee030 classes 4096 Jan 23 21:46 src
 drwx------ 2 wlee030 classes 4096 Jan 23 15:14 test
-ls ls -l ls -l -l ls -l -l -l wlee030@hammer.cs.ucr.edu$ls -l l1  -1 l	-l
+ls ls -l ls -l -l ls -l -l -l wlee030@hammer.cs.ucr.edu$ls -l l1  -1 l	-l #error after ls
 ls: invalid option -- '	'
 Try `ls --help' for more information.
-ls ls -l wlee030@hammer.cs.ucr.edu$-l ls
+ls ls -l wlee030@hammer.cs.ucr.edu$-l ls          #switching ls and -l
 There was an error in execvp. : No such file or directory
--l Inside child process -l wlee030@hammer.cs.ucr.edu$bad
+-l Inside child process -l wlee030@hammer.cs.ucr.edu$bad    #when bad
 There was an error in execvp. : No such file or directory
-Inside child process wlee030@hammer.cs.ucr.edu$ls bad
+Inside child process wlee030@hammer.cs.ucr.edu$ls bad       #try to ls with a bad addition
 ls: cannot access bad: No such file or directory
-ls wlee030@hammer.cs.ucr.edu$ ls -a
+ls wlee030@hammer.cs.ucr.edu$ ls -a                         #space in front of ls -a
 .  ..  bin  exec.script  .git  LICENSE	Makefile  README.md  src  test
-ls wlee030@hammer.cs.ucr.edu$ls      
+ls wlee030@hammer.cs.ucr.edu$ls                           #tabs after ls
 bin  exec.script  LICENSE  Makefile  README.md	src  test
-wlee030@hammer.cs.ucr.edu$;
+wlee030@hammer.cs.ucr.edu$;                         #semicolon only
 ^C
-~/rshell
-wlee030@hammer $ tue=[K[K[Kre[Kue ; ls
+~/rshell
+
+wlee030@hammer $ tue=[K[K[Kre[Kue ; ls  #true with semicolon and then ls
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ false ; ls
+[m~/rshell
+
+wlee030@hammer $ false ; ls     #false and semi colon and ls
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ true || ls
-~/rshell
-wlee030@hammer $ false  || ls
+[m~/rshell
+
+wlee030@hammer $ true || ls           #true and ls
+~/rshell
+
+wlee030@hammer $ false  || ls       #false and ls
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ false[K[K[K[K[Ktrue &&  ls
+[m~/rshell
+
+wlee030@hammer $ false[K[K[K[K[Ktrue &&  ls    #false with tabs and true
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ false && ls
-~/rshell
-wlee030@hammer $ true; ls -a
+[m~/rshell
+
+wlee030@hammer $ false && ls        #false and ls
+~/rshell
+
+wlee030@hammer $ true; ls -a      #true with semi colon ls
 [0m[01;34m.[0m/  [01;34m..[0m/  [01;34mbin[0m/  exec.script  [01;34m.git[0m/  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ false[K[K[K[K[Ktrue    ;ls -a
+[m~/rshell
+
+wlee030@hammer $ false[K[K[K[K[Ktrue    ;ls -a  #false with tabs and ; ls -a
 [0m[01;34m.[0m/  [01;34m..[0m/  [01;34mbin[0m/  exec.script  [01;34m.git[0m/  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ true  ;ls[K[K
+[m~/rshell
+
+wlee030@hammer $ true  ;ls[K[K    #true;ls and then spaces
 Display all 2878 possibilities? (y or n)
-~/rshell
-wlee030@hammer $ true  ; [Kls
+~/rshell
+
+wlee030@hammer $ true  ; [Kls      #true; ls and then tabs
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $  true &&false || true; ls || ls
+[m~/rshell
+
+wlee030@hammer $  true &&false || true; ls || ls     #space in front of true
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ ls#ls
+[m~/rshell
+
+wlee030@hammer $ ls#ls          #comment ls after an ls
 bash: ls#ls: command not found
-~/rshell
-wlee030@hammer $ ls# ls
+~/rshell
+
+wlee030@hammer $ ls# ls       #moved the comment around
 bash: ls#: command not found
-~/rshell
+~/rshell
+
 wlee030@hammer $ ls #ls
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $  #ls
-~/rshell
+[m~/rshell
+
+wlee030@hammer $  #ls      #space in front of ls
+~/rshell
+
 wlee030@hammer $ #ls 
-~/rshell
-wlee030@hammer $ ls; ls && false || ls# ;ls
+~/rshell
+
+wlee030@hammer $ ls; ls && false || ls# ;ls   #multiple ands,ors and semi colons
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
 [m[0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
 [mbash: ls#: command not found
 [0m[01;34mbin[0m/  exec.script  LICENSE  Makefile  README.md  [01;34msrc[0m/  [01;34mtest[0m/
-[m~/rshell
-wlee030@hammer $ ls;&&||ls
+[m~/rshell
+
+wlee030@hammer $ ls;&&||ls      #3 connectors next to each other
 bash: syntax error near unexpected token `;&'
-~/rshell
-wlee030@hammer $ ls||||||ls
+~/rshell
+
+wlee030@hammer $ ls||||||ls         #connectors with ors 3 times
 bash: syntax error near unexpected token `||'
-~/rshell
-wlee030@hammer $ exit[K[K[K[Kexit[K[K[K[Kexit
+~/rshell
+
+wlee030@hammer $ exit[K[K[K[Kexit[K[K[K[Kexit  #exit
 exit
 
 Script done on Fri 23 Jan 2015 10:40:54 PM PST
