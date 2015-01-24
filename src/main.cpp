@@ -24,12 +24,12 @@ bool syscalls(std::vector<char*> command)
 	//now argv has everything in command	
 	int pid = fork();
 	if(pid < 0){
-		perror("error with fork(child)");
+		perror("error with fork(child) ");
 		exit(1);
 	}
 	else if(pid == 0){		//child process running
 		std::cout << "Inside child process ";
-		if( execvp(argv[0],argv) == -1)
+		if(execvp(argv[0],argv) == -1)
 		{	
 			perror("There was an error in execvp. ");
 		}
@@ -37,7 +37,7 @@ bool syscalls(std::vector<char*> command)
 	}
 	else{ 				//in parent
 		if(waitpid(pid,&status,0) == -1){
-			perror("error with wait");
+			perror("error with wait ");
 			exit(1);
 		}
 	}
@@ -142,6 +142,8 @@ int main()
 		std::vector<char*> chainCom;	
 		for(size_t i = 0; i < commands.size();i++)			//loop through entire vector
 		{
+			for(size_t s = 0;s < chainCom.size();s++)
+				std::cout << chainCom[s] << " ";
 			std::string convtStr = commands.at(i); //convert to string to use
 			if(convtStr.compare("exit") == 0)	//exit when find "exit"
 				exit(1);
@@ -163,7 +165,7 @@ int main()
 					else if(prevCommand)
 						prevCommand = syscalls(chainCom);
 					else
-						perror("first command was false so cannot execute");
+						perror("first command was false so cannot execute ");
 					Connector = 1;
 					chainCom.clear();
 				}
@@ -177,28 +179,41 @@ int main()
 						prevCommand = syscalls(chainCom);
 					}
 					else
-						perror("first command was true so cannot execute");
+						perror("first command was true so cannot execute ");
 					Connector = 2;
 					chainCom.clear();
 				}
-				else							//no connectors
+				else							//no connectors after
 				{
-					if((commands.size() == i+1) && !firstCommand)
+					if((commands.size() == i+1) && !firstCommand)	//if the last word and has commands before it
 					{
-						if(Connector == 1 && !prevCommand)
-							perror("first command was false so cannot execute");
-						else if(Connector == 1 && prevCommand)
+						if(Connector == 1 && !prevCommand)		//if and And previous command failed
+							perror("first command was false so cannot execute ");
+						else if(Connector == 1 && prevCommand)		//if and And previous command succedded
+						{
+							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
-						else if(Connector== 2 && !prevCommand)
+						}
+						else if(Connector== 2 && !prevCommand)		//if OR and previous command failed
+						{
+							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
-						else if(Connector == 2 && prevCommand)
-							perror("first command was true so cannot execute");
-						else if(Connector == 3)
+						}
+						else if(Connector == 2 && prevCommand)		//if OR and previous command succeeded
+							perror("first command was true so cannot execute ");
+						else{						//if ; then always go
+							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
-						else
-							i = commands.size()+1;
+						}
+						i = commands.size() + 1;
 					}		
-					else
+					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
+					{
+						chainCom.push_back(commands[i]);
+						prevCommand = syscalls(chainCom);
+						i = commands.size()+1;
+					}
+					else							//not last word
 						chainCom.push_back(commands[i]);
 				}	
 			}
