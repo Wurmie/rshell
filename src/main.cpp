@@ -118,7 +118,8 @@ int main()
 		getline(std::cin,input);			//get input
 		
 		addSpaces(input);
-	
+		if(input.size() != 0)
+		{
 		char *tok = strtok(const_cast<char*>(input.c_str())," "); //will break the words if not a space
 		std::vector<char*> commands;				     //vector to store the commands
 		while(tok != NULL)					     //loop till end
@@ -162,6 +163,7 @@ int main()
 						prevCommand = syscalls(chainCom);
 				}	
 			}
+		}
 		}
 	}
 	return 0;
