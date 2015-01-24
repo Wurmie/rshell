@@ -42,6 +42,7 @@ bool syscalls(std::vector<char*> command)
 		}
 	}
 	//parent function here
+	delete []argv;
 	if(status == 0)
 		return true;
 	else
