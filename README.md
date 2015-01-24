@@ -3,6 +3,7 @@
 This is a copy of the original BASH terminal. Along with working like an original BASH, it can also run multiple commands in one line with ; and && and || connectors as well as # for comments. ; will always run the next command; || will only run if the command before that failed; && will only run if the command before it succeeded.
 ##How to use
 Run the program in a linux terminal. This program will not guarantee to run properly even in a linux terminal.
+Even though echo and ls are different commands, when testing, they are the same thing.
 
 To run the program:
 
