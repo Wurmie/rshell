@@ -4,18 +4,18 @@
 ##How to use
 >Run the program in a linux terminal. This program will not guarantee to run properly even in a linux terminal.
 >To run the program:
->$git clone https://github.com/Wurmie/rshell.git
->$cd rshell
->git checkout hw0
->make
->bin/rshell
+$git clone https://github.com/Wurmie/rshell.git
+$cd rshell
+git checkout hw0
+make
+bin/rshell
 ##Prerequisites
 >Need to run the program:
->	*Linux
->	*g++
->	*vim
+	*Linux
+	*g++
+	*vim
 ##Bugs/Limitations/Issues
 >
 ##Things not to do
->Does not do
->	*anything but ls,echo will give an error
+Does not do
+	*anything but ls,echo will give an error
