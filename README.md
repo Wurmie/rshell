@@ -4,7 +4,7 @@ This is a copy of the original BASH terminal. Along with working like an origina
 ##How to use
 Run the program in a linux terminal. This program will not guarantee to run properly even in a linux terminal.
 
-``To run the program:``
+To run the program:
 
 ``$git clone https://github.com/Wurmie/rshell.git``
 
@@ -25,7 +25,7 @@ Need to run the program:
 	* vim
 
 ##Bugs/Limitations/Issues
->
 ##Things not to do
 Does not do
+
 	* anything but ls,echo will give an error
