@@ -13,6 +13,7 @@
 
 bool syscalls(std::vector<char*> command)
 {
+	int status;
 	int argc = command.size()+1;				//size of argv
 	char **argv = new char*[argc];			//make argv pointer pointer for execvp.
 	for(int a = 0;a < argc-1;a++)			//shove everything in command into argv
@@ -28,18 +29,23 @@ bool syscalls(std::vector<char*> command)
 	}
 	else if(pid == 0){		//child process running
 		std::cout << "Inside child process ";
-		if(-1 == execvp(argv[0],argv))
+		if( execvp(argv[0],argv) == -1)
+		{	
 			perror("There was an error in execvp. ");
+		}
 		exit(1);		//kill child
 	}
 	else{ 				//in parent
-		if(wait(0) == -1){
+		if(waitpid(pid,&status,0) == -1){
 			perror("error with wait");
 			exit(1);
 		}
 	}
-	return false;
 	//parent function here
+	if(status == 0)
+		return true;
+	else
+		return false;
 }
 
 //adds spaces before and  after every connector and takes out comments as well
@@ -130,7 +136,9 @@ int main()
 		
 		//commands has all the words in vector of char*
 
-		bool prevCommand = false;
+		bool prevCommand;
+		bool firstCommand = true;
+		int Connector = 0;
 		std::vector<char*> chainCom;	
 		for(size_t i = 0; i < commands.size();i++)			//loop through entire vector
 		{
@@ -142,25 +150,56 @@ int main()
 				if(convtStr.compare(";")==0 && chainCom.size() != 0)	//found connector ;
 				{
 					prevCommand = syscalls(chainCom);
+					firstCommand = false;
 					chainCom.clear();						
 				}
 				else if(convtStr.compare("&&") == 0 && chainCom.size() != 0)	//found connector &&
 				{
-					if(!prevCommand)
+					if(firstCommand == true)
+					{
 						prevCommand = syscalls(chainCom);
+						firstCommand = false;
+					}
+					else if(prevCommand)
+						prevCommand = syscalls(chainCom);
+					else
+						perror("first command was false so cannot execute");
+					Connector = 1;
 					chainCom.clear();
 				}
 				else if(convtStr.compare("||") == 0 && chainCom.size() != 0)	//found connector ||
 				{
-					if(prevCommand)
+					if(firstCommand == true){
 						prevCommand = syscalls(chainCom);
+						firstCommand = false;
+					}
+					else if(!prevCommand){
+						prevCommand = syscalls(chainCom);
+					}
+					else
+						perror("first command was true so cannot execute");
+					Connector = 2;
 					chainCom.clear();
 				}
 				else							//no connectors
 				{
-					chainCom.push_back(commands[i]);			//add commands until ;&| found
-					if(commands.size() == i+1)
-						prevCommand = syscalls(chainCom);
+					if((commands.size() == i+1) && !firstCommand)
+					{
+						if(Connector == 1 && !prevCommand)
+							perror("first command was false so cannot execute");
+						else if(Connector == 1 && prevCommand)
+							prevCommand = syscalls(chainCom);
+						else if(Connector== 2 && !prevCommand)
+							prevCommand = syscalls(chainCom);
+						else if(Connector == 2 && prevCommand)
+							perror("first command was true so cannot execute");
+						else if(Connector == 3)
+							prevCommand = syscalls(chainCom);
+						else
+							i = commands.size()+1;
+					}		
+					else
+						chainCom.push_back(commands[i]);
 				}	
 			}
 		}
