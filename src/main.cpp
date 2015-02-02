@@ -185,8 +185,16 @@ int main()
 						 exit(1);	//if next one is exit
 					else
 					{
-						chainCom.push_back(commands[i]);
-						prevCommand = syscalls(chainCom);
+						for(int r = i; r < commands.size();r++)
+						{
+							if(convtStr.compare(";") == 0 || convtStr.compare("||") == 0 || convtStr.compare("&&") == 0))
+							{
+								prevCommand = syscalls(chainCom);
+								break;
+							}
+							else
+								chainCom.push_back(commands[i]);
+						}
 					}
 					firstCommand = false;
 					chainCom.clear();						
@@ -237,7 +245,7 @@ int main()
 				}
 				else							//no connectors after
 				{
-					if((commands.size() == i+1) && !firstCommand)	//if the last word and has commands before it and is not the only word
+					if(convtStr.compare(";") == 0 || convtStr.compare("||") == 0 || convtStr.compare("&&") == 0)	//if not first command and found connectors
 					{
 						if(Connector == 1 && !prevCommand)		//if and And previous command failed
 						{
