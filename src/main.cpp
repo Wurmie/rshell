@@ -53,65 +53,90 @@ bool syscalls(std::vector<char*> command)
 void addSpaces(std::string &inputs)
 {
 	//find #
-	size_t x = 0;
 	size_t temp = inputs.find("#");
-	if(temp > 1)
+	
+	if(temp > 0)		//first word is not #
 	{
 		inputs = inputs.substr(0,temp);
 	}
-	else if(temp == 1)
+	else if(temp == 0)	//first word is #
 		inputs = " ";
+	
 	//find ;
 	temp = 0;
-	x = 0;
-	while(temp < inputs.size())
+	while(temp < inputs.size() && temp >= 0)
 	{
 		if(temp == 0)
-			temp = inputs.find(";");
+			temp = inputs.find(";"); //will return -1 if no found
+		else if(temp > 0)		//was found last time
+			temp = inputs.find(";",temp+1);
 		else
-			temp = inputs.find(";",temp+1,1);
+			break;
 
-		if(temp != std::string::npos && x!=temp )
+		if(temp != std::string::npos && temp > 0)  //; is found and not first word
 		{
 			inputs.replace(temp,1," ; ");
-			x = temp+1;
+			temp = temp + 1;
 		}
+		else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+		{
+			inputs.replace(temp,1,"; ");
+			temp = temp + 1;
+		}
+		else
+			break;
 	}
 	
 	//find &&
 	temp = 0;
-	x = 0;
-	while(temp < inputs.size())
-	{
-		if(temp == 0)
-			temp = inputs.find("&&");
-                else
-                        temp = inputs.find("&&",temp+2,2);
-
-                if(temp != std::string::npos && x!=temp)
-                {
-                        inputs.replace(temp,2," && ");
-                        x = temp+2;
-                }
-        }
-	//find ||
-	temp = 0;
-        x = 0;
-        while(temp < inputs.size())
+	while(temp < inputs.size() && temp >= 0)
         {
                 if(temp == 0)
-                        temp = inputs.find("||");
+                        temp = inputs.find("&&"); //will return -1 if no found
+                else if(temp > 0)               //was found last time
+                        temp = inputs.find("&&",temp+2);
                 else
-                        temp = inputs.find("||",temp+2,2);
+                        break;
 
-                if(temp != std::string::npos && x!=temp)
+                if(temp != std::string::npos && temp > 0)  //; is found and not first word
+                {
+                        inputs.replace(temp,2," && ");
+                        temp = temp + 2;
+                }
+                else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+                {
+                        inputs.replace(temp,2,"; ");
+                        temp = temp + 2;
+                }
+                else
+                        break;
+        }
+
+	//find ||
+	temp = 0;
+	while(temp < inputs.size() && temp >= 0)
+        {
+                if(temp == 0)
+                        temp = inputs.find("||"); //will return -1 if no found
+                else if(temp > 0)               //was found last time
+                        temp = inputs.find("||",temp+2);
+                else
+                        break;
+
+                if(temp != std::string::npos && temp > 0)  //; is found and not first word
                 {
                         inputs.replace(temp,2," || ");
-                        x = temp+2;
+                        temp = temp + 2;
                 }
+                else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+                {
+                        inputs.replace(temp,2,"; ");
+                        temp = temp + 2;
+                }
+                else
+                        break;
         }
 }
-
 int main()
 {
 	std::string input;		//string value to get input
@@ -123,8 +148,9 @@ int main()
 	{
 		std::cout << username << "@" << hostname << "$"; //output beg
 		getline(std::cin,input);			//get input
-		
+			
 		addSpaces(input);
+
 		if(input.size() != 0)
 		{
 		char *tok = strtok(const_cast<char*>(input.c_str())," "); //will break the words if not a space
@@ -134,25 +160,34 @@ int main()
 			commands.push_back(tok);
 			tok = strtok(NULL," ");
 		}
-		
-		//commands has all the words in vector of char*
-
+		//commands has all the words in vector of char*	
 		bool prevCommand;
 		bool firstCommand = true;
 		int Connector = 0;
-		std::vector<char*> chainCom;	
+		std::vector<char*> chainCom;
+		std::string convtStr;	
 		for(size_t i = 0; i < commands.size();i++)			//loop through entire vector
 		{
-			for(size_t s = 0;s < chainCom.size();s++)
-				std::cout << chainCom[s] << " ";
-			std::string convtStr = commands.at(i); //convert to string to use
+			convtStr = commands.at(i); //convert to string to use
+
 			if(convtStr.compare("exit") == 0)	//exit when find "exit"
 				exit(1);
 			else
 			{
-				if(convtStr.compare(";")==0 && chainCom.size() != 0)	//found connector ;
+				if(convtStr.compare(";")==0 && chainCom.size() != 0 && firstCommand)	//found connector ;
 				{
 					prevCommand = syscalls(chainCom);
+					chainCom.clear();
+					i++;
+						
+					convtStr = commands.at(i);
+					if(convtStr.compare("exit") == 0)
+						 exit(1);	//if next one is exit
+					else
+					{
+						chainCom.push_back(commands[i]);
+						prevCommand = syscalls(chainCom);
+					}
 					firstCommand = false;
 					chainCom.clear();						
 				}
@@ -161,12 +196,24 @@ int main()
 					if(firstCommand == true)
 					{
 						prevCommand = syscalls(chainCom);
+						chainCom.clear();
+						i++;
+						if(prevCommand)
+						{
+							chainCom.push_back(commands[i];
+							prevCommand = syscalls(chainCom);
+						}
 						firstCommand = false;
 					}
 					else if(prevCommand)
 						prevCommand = syscalls(chainCom);
+						firstCommand = true;
+					}
 					else
-						perror("first command was false so cannot execute ");
+					{
+						perror("1first command was false so cannot execute ");
+						firstCommand = true;
+					}
 					Connector = 1;
 					chainCom.clear();
 				}
@@ -178,45 +225,61 @@ int main()
 					}
 					else if(!prevCommand){
 						prevCommand = syscalls(chainCom);
+						firstCommand = true;
 					}
 					else
-						perror("first command was true so cannot execute ");
+					{
+						perror("1first command was true so cannot execute ");
+						firstCommand = true;
+					}
 					Connector = 2;
 					chainCom.clear();
 				}
 				else							//no connectors after
 				{
-					if((commands.size() == i+1) && !firstCommand)	//if the last word and has commands before it
+					if((commands.size() == i+1) && !firstCommand)	//if the last word and has commands before it and is not the only word
 					{
 						if(Connector == 1 && !prevCommand)		//if and And previous command failed
-							perror("first command was false so cannot execute ");
+						{
+							perror("2first command was false so cannot execute ");
+						}
 						else if(Connector == 1 && prevCommand)		//if and And previous command succedded
 						{
 							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
 						}
 						else if(Connector== 2 && !prevCommand)		//if OR and previous command failed
-						{
+						{	
 							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
 						}
 						else if(Connector == 2 && prevCommand)		//if OR and previous command succeeded
-							perror("first command was true so cannot execute ");
+						{
+							perror("2first command was true so cannot execute ");
+						}
 						else{						//if ; then always go
 							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
 						}
-						i = commands.size() + 1;
 					}		
-					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
+			/*		else if(firstCommand && commands.size() == i+1)		//first word and nothing after
+					{
+						if((convtStr.compare(";") != 0) && (convtStr.compare("||") != 0) && (convtStr.compare("&&") != 0))
+						{
+							chainCom.push_back(commands[i]);
+							prevCommand = syscalls(chainCom);
+							break;
+						}
+						else
+							break;
+					}
+					else if((convtStr.compare(";") != 0) && (convtStr.compare("||") != 0) && (convtStr.compare("&&") != 0))	//not last word and not connector
 					{
 						chainCom.push_back(commands[i]);
-						prevCommand = syscalls(chainCom);
-						i = commands.size()+1;
-					}
-					else							//not last word
+					}*/
+					else
 						chainCom.push_back(commands[i]);
-				}	
+				}
 			}
 		}
 		}
