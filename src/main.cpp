@@ -163,7 +163,6 @@ int main()
 		//commands has all the words in vector of char*	
 		bool prevCommand;
 		bool firstCommand = true;
-		int Connector = 0;
 		std::vector<char*> chainCom;
 		std::string convtStr;	
 		for(size_t i = 0; i < commands.size();i++)			//loop through entire vector
@@ -178,99 +177,102 @@ int main()
 				{
 					prevCommand = syscalls(chainCom);
 					chainCom.clear();
-					i++;
-						
-					convtStr = commands.at(i);
-					if(convtStr.compare("exit") == 0)
-						 exit(1);	//if next one is exit
-					else
+					
+					if(commands.size() != i+1)
 					{
-						for(int r = i; r < commands.size();r++)
+						i++;	
+						convtStr = commands.at(i);
+						if(convtStr.compare("exit") == 0)
+							 exit(1);	//if next one is exit
+						else
 						{
-							if(convtStr.compare(";") == 0 || convtStr.compare("||") == 0 || convtStr.compare("&&") == 0))
-							{
-								prevCommand = syscalls(chainCom);
-								break;
-							}
-							else
-								chainCom.push_back(commands[i]);
-						}
-					}
-					firstCommand = false;
-					chainCom.clear();						
-				}
-				else if(convtStr.compare("&&") == 0 && chainCom.size() != 0)	//found connector &&
-				{
-					if(firstCommand == true)
-					{
-						prevCommand = syscalls(chainCom);
-						chainCom.clear();
-						i++;
-						if(prevCommand)
-						{
-							chainCom.push_back(commands[i];
+							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
 						}
 						firstCommand = false;
-					}
-					else if(prevCommand)
-						prevCommand = syscalls(chainCom);
-						firstCommand = true;
-					}
-					else
-					{
-						perror("1first command was false so cannot execute ");
-						firstCommand = true;
-					}
-					Connector = 1;
-					chainCom.clear();
+						chainCom.clear();
+					}						
 				}
-				else if(convtStr.compare("||") == 0 && chainCom.size() != 0)	//found connector ||
+				else if(convtStr.compare("&&") == 0 && chainCom.size() != 0 && firstCommand)	//found connector &&
 				{
-					if(firstCommand == true){
-						prevCommand = syscalls(chainCom);
-						firstCommand = false;
-					}
-					else if(!prevCommand){
-						prevCommand = syscalls(chainCom);
-						firstCommand = true;
-					}
-					else
-					{
-						perror("1first command was true so cannot execute ");
-						firstCommand = true;
-					}
-					Connector = 2;
+					prevCommand = syscalls(chainCom);	//output first command		
 					chainCom.clear();
+
+					if(commands.size() != i+1)
+					{
+						i++;
+						convtStr = commands.at(i);
+						if(convtStr.compare("exit") == 0)
+							exit(1);
+						else if(prevCommand)
+						{
+							chainCom.push_back(commands[i]);
+							prevCommand = syscalls(chainCom);
+						}		
+						else
+							perror("first command was false so cannot execute ");
+						firstCommand = false;
+						chainCom.clear();
+					}
+				}
+				else if(convtStr.compare("||") == 0 && chainCom.size() != 0 && firstCommand)	//found connector ||
+				{
+					prevCommand = syscalls(chainCom);
+					chainCom.clear();
+
+					if(commands.size() != i+1)
+					{	
+						i++;
+						convtStr = commands.at(i);
+						if(convtStr.compare("exit") == 0)
+							exit(1);
+						else if(!prevCommand)
+						{
+							chainCom.push_back(commands[i]);
+							prevCommand = syscalls(chainCom);
+						}
+						else
+							perror("first command was true so cannot execute ");
+						firstCommand = false;
+						chainCom.clear();
+					}
 				}
 				else							//no connectors after
 				{
-					if(convtStr.compare(";") == 0 || convtStr.compare("||") == 0 || convtStr.compare("&&") == 0)	//if not first command and found connectors
+					//if(convtStr.compare(";") == 0 || convtStr.compare("||") == 0 || convtStr.compare("&&") == 0)
+					if(convtStr.compare(";") == 0 && commands.size() != i+1)	//if not first command and found ; and not last position
 					{
-						if(Connector == 1 && !prevCommand)		//if and And previous command failed
-						{
-							perror("2first command was false so cannot execute ");
-						}
-						else if(Connector == 1 && prevCommand)		//if and And previous command succedded
+						i++;
+						chainCom.push_back(commands[i]);
+						prevCommand = syscalls(chainCom);
+						chainCom.clear();
+					}
+					else if(convtStr.compare("&&") == 0 && commands.size() != i+1)
+					{
+						i++;
+						if(prevCommand)
 						{
 							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
+							chainCom.clear();
 						}
-						else if(Connector== 2 && !prevCommand)		//if OR and previous command failed
-						{	
-							chainCom.push_back(commands[i]);
-							prevCommand = syscalls(chainCom);
-						}
-						else if(Connector == 2 && prevCommand)		//if OR and previous command succeeded
-						{
-							perror("2first command was true so cannot execute ");
-						}
-						else{						//if ; then always go
-							chainCom.push_back(commands[i]);
-							prevCommand = syscalls(chainCom);
-						}
-					}		
-			/*		else if(firstCommand && commands.size() == i+1)		//first word and nothing after
+						else
+							perror("first command was false so cannot execute ");
+					}
+					else if(convtStr.compare("||") == 0 && commands.size() != i+1)
+                                        {
+                                                i++;
+                                                if(!prevCommand)
+                                                {
+                                                        chainCom.push_back(commands[i]);
+                                                        prevCommand = syscalls(chainCom);
+                                                        chainCom.clear();
+                                                }
+                                                else
+                                                        perror("first command was true so cannot execute ");
+                                        }
+
+					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
 					{
 						if((convtStr.compare(";") != 0) && (convtStr.compare("||") != 0) && (convtStr.compare("&&") != 0))
 						{
@@ -281,15 +283,15 @@ int main()
 						else
 							break;
 					}
-					else if((convtStr.compare(";") != 0) && (convtStr.compare("||") != 0) && (convtStr.compare("&&") != 0))	//not last word and not connector
+					else
 					{
 						chainCom.push_back(commands[i]);
-					}*/
-					else
-						chainCom.push_back(commands[i]);
+						if(!firstCommand)
+							firstCommand = true;
+					}
 				}
 			}
-		}
+		}	
 		}
 	}
 	return 0;
