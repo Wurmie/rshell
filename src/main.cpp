@@ -240,36 +240,60 @@ int main()
 				else							//no connectors after
 				{
 					//if(convtStr.compare(";") == 0 || convtStr.compare("||") == 0 || convtStr.compare("&&") == 0)
-					if(convtStr.compare(";") == 0 && commands.size() != i+1)	//if not first command and found ; and not last position
-					{
-						i++;
-						chainCom.push_back(commands[i]);
-						prevCommand = syscalls(chainCom);
-						chainCom.clear();
-					}
-					else if(convtStr.compare("&&") == 0 && commands.size() != i+1)
-					{
-						i++;
-						if(prevCommand)
-						{
-							chainCom.push_back(commands[i]);
-							prevCommand = syscalls(chainCom);
-							chainCom.clear();
-						}
-						else
-							perror("first command was false so cannot execute ");
-					}
-					else if(convtStr.compare("||") == 0 && commands.size() != i+1)
+					if(convtStr.compare(";") == 0 && commands.size() != i+1)        //if not first command and found ; and not last position
                                         {
-                                                i++;
-                                                if(!prevCommand)
+                                                if(firstCommand)
                                                 {
+                                                        perror("error in bash ");
+                                                        break;
+                                                }
+                                                else
+                                                {
+                                                        i++;
                                                         chainCom.push_back(commands[i]);
                                                         prevCommand = syscalls(chainCom);
                                                         chainCom.clear();
                                                 }
+                                        }
+                                        else if(convtStr.compare("&&") == 0 && commands.size() != i+1)
+                                        {
+                                                if(firstCommand)
+                                                {
+                                                        perror("error in bash ");
+                                                        break;
+                                                }
                                                 else
-                                                        perror("first command was true so cannot execute ");
+                                                {
+                                                        i++;
+                                                        if(prevCommand)
+                                                        {
+                                                                chainCom.push_back(commands[i]);
+                                                                prevCommand = syscalls(chainCom);
+                                                                chainCom.clear();
+                                                        }
+                                                        else
+                                                                perror("first command was false so cannot execute ");
+                                                }
+                                        }
+					else if(convtStr.compare("||") == 0 && commands.size() != i+1)
+                                        {
+                                                if(firstCommand)
+                                                {
+                                                        perror("error in bash ");
+                                                        break;
+                                                }
+                                                else
+                                                {
+                                                        i++;
+                                                        if(!prevCommand)
+                                                        {
+                                                                chainCom.push_back(commands[i]);
+                                                                prevCommand = syscalls(chainCom);
+                                                                chainCom.clear();
+                                                        }
+                                                        else
+                                                                perror("first command was true so cannot execute ");
+                                                }
                                         }
 
 					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
