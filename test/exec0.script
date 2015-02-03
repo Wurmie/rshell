@@ -1,0 +1,89 @@
+Script started on Mon 02 Feb 2015 11:29:47 PM PST
+~
+wlee030@hammer $ cd rshell
+~/rshell
+wlee030@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+~/rshell
+wlee030@hammer $ bin/rshell
+wlee030@hammer.cs.ucr.edu$;
+wlee030@hammer.cs.ucr.edu$||
+wlee030@hammer.cs.ucr.edu$&&
+wlee030@hammer.cs.ucr.edu$;ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$; ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$ ; ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$ ;ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$ ; ; ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$; ;ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$;; ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$ls ; ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$ls;ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$;ls;ls;ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$ls;lsl ' ;ls;lsl;s   ;ls;ls;ls;ls;ls;ls;ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$&&ls   ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$|| ls
+error in bash : Success
+wlee030@hammer.cs.ucr.edu$ls &&     true && ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$fale se && ls
+first command was false so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$fa  true || ls         ru   ls && ls && ls && ls && ls &&l  ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$ls || s ls        true || ls
+first command was true so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$false || ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$true || ls || ls
+first command was true so cannot execute : Success
+first command was true so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$false || ls || ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+first command was true so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$ls  ls ; || ls || ls ||
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+first command was true so cannot execute : Success
+first command was true so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$ls && ls || ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+first command was true so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$ls    	ls;   ls ||     l ls  ls || ls ||  && ls
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+first command was true so cannot execute : Success
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$ls ||     exit
+~/rshell
+wlee030@hammer $ exit
+exit
+
+Script done on Mon 02 Feb 2015 11:33:56 PM PST
