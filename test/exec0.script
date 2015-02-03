@@ -1,38 +1,41 @@
 Script started on Mon 02 Feb 2015 11:29:47 PM PST
-~
+~
+
 wlee030@hammer $ cd rshell
-~/rshell
+~/rshell
+
 wlee030@hammer $ make
 mkdir -p ./bin
 g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/rshell
-wlee030@hammer.cs.ucr.edu$;
-wlee030@hammer.cs.ucr.edu$||
-wlee030@hammer.cs.ucr.edu$&&
-wlee030@hammer.cs.ucr.edu$;ls
+wlee030@hammer.cs.ucr.edu$; #; by itself
+wlee030@hammer.cs.ucr.edu$|| #|| by itself
+wlee030@hammer.cs.ucr.edu$&& #&& by itself
+wlee030@hammer.cs.ucr.edu$;ls #; in the front
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$; ls
+wlee030@hammer.cs.ucr.edu$; ls #; in front with space inbetween
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$ ; ls
+wlee030@hammer.cs.ucr.edu$ ; ls #space then ;
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$ ;ls
+wlee030@hammer.cs.ucr.edu$ ;ls #space but ; is connected with ls
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$ ; ; ls
+wlee030@hammer.cs.ucr.edu$ ; ; ls #multiple spaces randomly
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$; ;ls
+wlee030@hammer.cs.ucr.edu$; ;ls #2 ; connectors seperated with space
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$;; ls
+wlee030@hammer.cs.ucr.edu$;; ls #2 ; connectors not seperated with space
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$ls ; ls
+wlee030@hammer.cs.ucr.edu$ls ; ls #2 ls connected with ;
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
-wlee030@hammer.cs.ucr.edu$ls;ls
+wlee030@hammer.cs.ucr.edu$ls;ls #same as above without spaces
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
-wlee030@hammer.cs.ucr.edu$;ls;ls;ls
+wlee030@hammer.cs.ucr.edu$;ls;ls;ls #multiple ls' but ; is the first command
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$ls;lsl ' ;ls;lsl;s   ;ls;ls;ls;ls;ls;ls;ls
+wlee030@hammer.cs.ucr.edu$ls;lsl ' ;ls;lsl;s   ;ls;ls;ls;ls;ls;ls;ls #>10 ls with ; connectors
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
@@ -44,45 +47,46 @@ bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
-wlee030@hammer.cs.ucr.edu$&&ls   ls
+wlee030@hammer.cs.ucr.edu$&&ls   ls #ls with && in front and lots of spaces afterwards
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$|| ls
+wlee030@hammer.cs.ucr.edu$|| ls #|| in front with space
 error in bash : Success
-wlee030@hammer.cs.ucr.edu$ls &&     true && ls
+wlee030@hammer.cs.ucr.edu$ls &&     true && ls #true && ls
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
-wlee030@hammer.cs.ucr.edu$fale se && ls
+wlee030@hammer.cs.ucr.edu$fale se && ls #false and ls
 first command was false so cannot execute : Success
-wlee030@hammer.cs.ucr.edu$fa  true || ls         ru   ls && ls && ls && ls && ls &&l  ls
+wlee030@hammer.cs.ucr.edu$fa  true || ls         ru   ls && ls && ls && ls && ls &&l  ls #lots of && connectors
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
-wlee030@hammer.cs.ucr.edu$ls || s ls        true || ls
+wlee030@hammer.cs.ucr.edu$ls || s ls        true || ls #true or ls
 first command was true so cannot execute : Success
-wlee030@hammer.cs.ucr.edu$false || ls
+wlee030@hammer.cs.ucr.edu$false || ls #false or ls
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
-wlee030@hammer.cs.ucr.edu$true || ls || ls
-first command was true so cannot execute : Success
-first command was true so cannot execute : Success
-wlee030@hammer.cs.ucr.edu$false || ls || ls
-bin  exec0.script  LICENSE  Makefile  README.md  src  test
-first command was true so cannot execute : Success
-wlee030@hammer.cs.ucr.edu$ls  ls ; || ls || ls ||
-bin  exec0.script  LICENSE  Makefile  README.md  src  test
+wlee030@hammer.cs.ucr.edu$true || ls || ls #connectors but first instance failed. the first part was false so second part false too
 first command was true so cannot execute : Success
 first command was true so cannot execute : Success
-wlee030@hammer.cs.ucr.edu$ls && ls || ls
+wlee030@hammer.cs.ucr.edu$false || ls || ls #first part was true so second part fails
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+first command was true so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$ls  ls ; || ls || ls || #>10 || connectors
+bin  exec0.script  LICENSE  Makefile  README.md  src  test
+first command was true so cannot execute : Success
+first command was true so cannot execute : Success
+wlee030@hammer.cs.ucr.edu$ls && ls || ls #mixing the connectors up with a true || ls
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 first command was true so cannot execute : Success
-wlee030@hammer.cs.ucr.edu$ls    	ls;   ls ||     l ls  ls || ls ||  && ls
+wlee030@hammer.cs.ucr.edu$ls    	ls;   ls ||     l ls  ls || ls ||  && ls #ls||ls&&ls first instance fails so goes to next one
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 first command was true so cannot execute : Success
 bin  exec0.script  LICENSE  Makefile  README.md  src  test
 wlee030@hammer.cs.ucr.edu$ls ||     exit
-~/rshell
+~/rshell
+
 wlee030@hammer $ exit
 exit
 
