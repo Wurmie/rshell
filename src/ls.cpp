@@ -43,32 +43,37 @@ void whichFlags(char* command,std::vector<bool> &flaggs)
 int main(int argc,char** argv)
 {
 	size_t newArgc = argc;
+	std::string comm;
+//	for(size_t h = 1;h < newArgc;h++)
+//		std::cout << argv[h] << " ";
 	if(argc < 1)	//there are no commands
 	{
 		perror("Error: Something went wrong");
 		exit(1);
 	}
-	else
+	else	//something was inputted
 	{	
 		std::vector<bool>theFlags(3,false);	//initialize flag. 1=-l,2=-a,3=-R
 	
 		//check for path or flag
-		for(size_t i = 0;i < newArgc;i++)
+		//first word needs to be ls or cannot work
+		comm = argv[0];
+		if(comm == "ls")
 		{
-			char* comm = argv[i];
-			if(comm[i] == '-')	//if find -, then it is a flag
+			for(size_t i = 1;i < newArgc;i++)
 			{
-				whichFlags(comm,theFlags);
-				std::cout << "here";
-				for(size_t a = 0;a < 3;a++)
-					std::cout << theFlags[a] << " ";
+				comm = argv[i];
+				if(comm[i] == '-')	//if find -, then it is a flag
+				{
+					whichFlags(argv[i],theFlags);
+				}
+				else if()	//if a path
+				{
+				}
+				else		//if not any
+				{
+				}
 			}
-		/*	else if()		//else if its a path
-			{
-			}
-			else			//if its none of them. aka error
-			{
-			}*/
 		}
 	}	
 	/*
