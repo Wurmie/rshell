@@ -103,10 +103,9 @@ void addSpaces(std::string &inputs)
                         inputs.replace(temp,2," && ");
                         temp = temp + 2;
                 }
-                else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+                else if(temp != std::string::npos && temp > 0) //; is found and is first word and not the only word
                 {
-                        inputs.replace(temp,2,"; ");
-                        temp = temp + 2;
+                        
                 }
                 else
                         break;
