@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <vector>
 #include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
+#include <string>
 
 //turn flags on
 bool whichFlags(char* command,std::vector<bool> &flaggs)
@@ -90,6 +93,58 @@ int main(int argc,char** argv)
                 	std::cout << theFlags[z] << std::endl;
 		
 		//start to open the paths...somehow
+		if(paths.size() == 0) //nothing in there
+			paths.push_back(".");
+		
+		for(size_t e = 0; e < paths.size();e++)
+			std::cout << paths[e] << " ";
+		//dirent *direntp;
+
+		//go through the paths?
+		for(size_t x = 0; x < paths.size();x++)
+		{
+			std::vector<std::string> toOpen;
+			std::string fileOpen;
+			//if there are multiple paths, gotta output that shit. otherwise u dont
+			if(paths.size() > 1)
+				std::cout << paths[x] << ":" << std::endl;
+			
+			//can opendir multiple times to open multiple folders. be sure to closedir
+			
+			//we opening the dam directory but what if opening multiple directories
+			//keep searching for / 
+			size_t temp = 0;
+			size_t tempPrev = 0;
+			while(temp < paths[x].size() && temp >= 0)
+			{
+				if(temp == 0)	//first time finding /
+				{
+					temp = paths[x].find("/");
+				}
+				else if(temp > 0) //not first time finding
+				{
+					temp = paths[x].find("/");
+				}
+				else
+					break;
+				//has to be found and is the first word found
+				if(tempPrev == 0 && temp != std::string::npos)
+				{
+					toOpen.push_back(paths[x].substr(0,temp));
+					tempPrev = temp+1;
+					temp++;
+				}
+				else if(tempPrev > 0 && temp != std::string::npos)
+				{
+					toOpen.push_back(paths[x].substr(x,temp));
+					temp++;
+				}
+				else
+					break;
+			}
+			for(size_t u = 0;u < toOpen.size();u++)
+				std::cout << toOpen[u] << " ";
+		}
 	}
 	else	//nothing input. only bin/ls
 		exit(1);
