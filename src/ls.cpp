@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string>
+#include <algorithm>
 
 //turn flags on
 bool whichFlags(char* command,std::vector<bool> &flaggs)
@@ -46,6 +47,15 @@ bool whichFlags(char* command,std::vector<bool> &flaggs)
 		}
 	}
 	return isValid;
+}
+
+getPermission()
+{
+	
+}
+void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags)
+{
+	getPermission();
 }
 
 //get an array of char pointers(arrays)
@@ -89,61 +99,49 @@ int main(int argc,char** argv)
 			}
 			
 		}
-		for(int z = 0;z < 3;z++)
-                	std::cout << theFlags[z] << std::endl;
+		//for(int z = 0;z < 3;z++)
+                //	std::cout << theFlags[z] << std::endl;
 		
 		//start to open the paths...somehow
-		if(paths.size() == 0) //nothing in there
-			paths.push_back(".");
+		//if(paths.size() == 0) //nothing in there
+		//	paths.push_back(".");
 		
-		for(size_t e = 0; e < paths.size();e++)
-			std::cout << paths[e] << " ";
-		//dirent *direntp;
+		//for(size_t e = 0; e < paths.size();e++)
+		//	std::cout << paths[e] << " ";
+		dirent *direntp;
 
 		//go through the paths?
 		for(size_t x = 0; x < paths.size();x++)
 		{
-			std::vector<std::string> toOpen;
-			std::string fileOpen;
-			//if there are multiple paths, gotta output that shit. otherwise u dont
+			std::vector<std::string> filenames;
 			if(paths.size() > 1)
 				std::cout << paths[x] << ":" << std::endl;
 			
-			//can opendir multiple times to open multiple folders. be sure to closedir
-			
-			//we opening the dam directory but what if opening multiple directories
-			//keep searching for / 
-			size_t temp = 0;
-			size_t tempPrev = 0;
-			while(temp < paths[x].size() && temp >= 0)
+			DIR *dirp = opendir(paths[x].c_str());
+			if(dirp == NULL)
 			{
-				if(temp == 0)	//first time finding /
-				{
-					temp = paths[x].find("/");
-				}
-				else if(temp > 0) //not first time finding
-				{
-					temp = paths[x].find("/");
-				}
-				else
-					break;
-				//has to be found and is the first word found
-				if(tempPrev == 0 && temp != std::string::npos)
-				{
-					toOpen.push_back(paths[x].substr(0,temp));
-					tempPrev = temp+1;
-					temp++;
-				}
-				else if(tempPrev > 0 && temp != std::string::npos)
-				{
-					toOpen.push_back(paths[x].substr(x,temp));
-					temp++;
-				}
-				else
-					break;
+				perror("opendir failed");
+				exit(1);
 			}
-			for(size_t u = 0;u < toOpen.size();u++)
-				std::cout << toOpen[u] << " ";
+			
+			while((direntp = readdir(dirp)))
+			{
+				if(direntp <  0)
+				{
+					perror("direntp failed");
+					exit(1);
+				}
+				if(
+					filenames.push_back(direntp->d_name);
+			}	
+			closedir(dirp);
+			if(closedir == -1)
+				perror("closedir failed");
+			std::sort(filenames.begin(),filenames.end());
+			
+			outputFormat(filenames,theFlags);
+			//for(size_t u = 0;u < filenames.size();u++)
+			//	std::cout << filenames[u] << " ";
 		}
 	}
 	else	//nothing input. only bin/ls
