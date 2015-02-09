@@ -16,11 +16,11 @@ wlee030@hammer $ #a flag only
 wlee030@hammer $ -a[K[Kbin/ls ls -a
 . .. bin .git LICENSE ls.script Makefile README.md src test 
 ~/rshell
-
+//more than 10 -a
 wlee030@hammer $ bin/ls ls -a -a -a -a -a -a -a -a -a -a-[K -a
 . .. bin .git LICENSE ls.script Makefile README.md src test 
 ~/rshell
-
+//-l
 wlee030@hammer $ bin/ls ls -l
 total: 40
 drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
@@ -31,7 +31,7 @@ drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
 ~/rshell
-
+//>10 -l
 wlee030@hammer $ bin/ls ls -l -l -l-[K -l -l -l -l -l -l -l -l
 total: 40
 drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
@@ -42,7 +42,7 @@ drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
 ~/rshell
-
+//>10 -R
 wlee030@hammer $ bin/ls ls -R -R -R -R-[K -R -R -R -R -R -R -R
 .:
 bin LICENSE ls.script Makefile README.md src test 
@@ -57,30 +57,30 @@ main.cpp ls.cpp
 exec.script exec0.script 
 
 ~/rshell
-
+//invalid flag
 wlee030@hammer $ bin/ls ls -G
 bad input: Success
 ~/rshell
-
+//ls a source
 wlee030@hammer $ bin/ls ls src
 ls.cpp main.cpp 
 ~/rshell
-
+//ls a directory and file
 wlee030@hammer $ bin/ls ls src README.md
 src:
 ls.cpp main.cpp 
 README.md:
 opendir failed: Not a directory
 ~/rshell
-
+//file inside folder
 wlee030@hammer $ bin/ls ls src/main.cpp
 opendir failed: Not a directory
 ~/rshell
-
+//folder inside file
 wlee030@hammer $ bin [K/ls ls main.cpp/src
 opendir failed: No such file or directory
 ~/rshell
-
+//multiple folders
 wlee030@hammer $ bin/ls ls src src src src src c[Ksrc src src
 src:
 ls.cpp main.cpp 
@@ -99,44 +99,44 @@ ls.cpp main.cpp
 src:
 ls.cpp main.cpp 
 ~/rshell
-
+//bad files
 wlee030@hammer $ bin/ls ls ffkfkfkfkf
 opendir failed: No such file or directory
 ~/rshell
-
+//directory and file seperated by space
 wlee030@hammer $ bin/ls ls src README.d[Kmd src
 src:
 ls.cpp main.cpp 
 README.md:
 opendir failed: Not a directory
 ~/rshell
-
+//multiple paths with 1 in directory in the middle
 wlee030@hammer $ bin/ls ls sdfasdfa/[K src asdfasdf
 sdfasdfa:
 opendir failed: No such file or directory
 ~/rshell
-
+//2 directory with -a
 wlee030@hammer $ l[Kbin/ls ls src -a src
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
 ~/rshell
-
+//-a in the end with 2 directories before
 wlee030@hammer $ bin/ls ls src src -a
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
 ~/rshell
-
+//-a in the front
 wlee030@hammer $ bin/ls ls -a src src
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
 ~/rshell
-
+//-l in front
 wlee030@hammer $ bin/ls ls -l src src
 src:
 total: 24
@@ -147,7 +147,7 @@ total: 24
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
 ~/rshell
-
+//-l in the middle
 wlee030@hammer $ bin/ls ls src -l src
 src:
 total: 24
@@ -158,7 +158,7 @@ total: 24
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
 ~/rshell
-
+//-l in the end
 wlee030@hammer $ bin/ls ls src src -l
 src:
 total: 24
@@ -169,7 +169,7 @@ total: 24
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
 ~/rshell
-
+//-R in the front
 wlee030@hammer $ bin/ls ls -R src src
 src:
 src:
@@ -180,7 +180,7 @@ src:
 ls.cpp main.cpp 
 
 ~/rshell
-
+//-R in the middle
 wlee030@hammer $ bin/ls ls src -R src
 src:
 src:
@@ -191,7 +191,7 @@ src:
 ls.cpp main.cpp 
 
 ~/rshell
-
+//-R in the end
 wlee030@hammer $ bin/ls ls src src -R
 src:
 src:
@@ -202,14 +202,14 @@ src:
 ls.cpp main.cpp 
 
 ~/rshell
-
+//2 source and >10 -a
 wlee030@hammer $ bin/ls ls src src - [Ka -a -a -a -a -a -a -a -a -a -a -a -a
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
 ~/rshell
-
+//-al
 wlee030@hammer $ bin/ls ls -al -[K[K
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -223,7 +223,7 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
 ~/rshell
-
+//-a -l(seperated by space)
 wlee030@hammer $ bin/ls ls -a -l
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -237,7 +237,7 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
 ~/rshell
-
+//-la w/o space
 wlee030@hammer $ bin/ls ls -la
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -251,7 +251,7 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
 ~/rshell
-
+//-l -a with space inbtween
 wlee030@hammer $ bin/ls ls -l -a
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -265,7 +265,7 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
 ~/rshell
-
+//-a -R w/ space
 wlee030@hammer $ bin/ls ls -a -R
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -331,7 +331,7 @@ wlee030@hammer $ bin/ls ls -a -R
 . .. exec.script exec0.script 
 
 ~/rshell
-
+//-a -R with space
 wlee030@hammer $ bin/ls ls -a - R[K[KR
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -397,7 +397,7 @@ wlee030@hammer $ bin/ls ls -a - R[K[KR
 . .. exec.script exec0.script 
 
 ~/rshell
-
+//-Ra with R in front
 wlee030@hammer $ bin/ls ls -Ra
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -463,7 +463,7 @@ wlee030@hammer $ bin/ls ls -Ra
 . .. exec.script exec0.script 
 
 ~/rshell
-
+//-R -a with space
 wlee030@hammer $ bn[Kin/ls ls -R -a
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -529,7 +529,7 @@ wlee030@hammer $ bn[Kin/ls ls -R -a
 . .. exec.script exec0.script 
 
 ~/rshell
-
+//-lR
 wlee030@hammer $ bin/ls ls -lR
 total: 40
 .:
@@ -561,7 +561,7 @@ exec.script exec0.script
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
 ~/rshell
-
+//-l and -R with space inbetween
 wlee030@hammer $ bin/ls ls -l -R
 total: 40
 .:
@@ -593,7 +593,7 @@ exec.script exec0.script
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
 ~/rshell
-
+//-R and -l
 wlee030@hammer $ bin/ls ls 0R[K[K-R -l
 total: 40
 .:
@@ -625,7 +625,7 @@ exec.script exec0.script
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
 ~/rshell
-
+//-Rl w/o space
 wlee030@hammer $ bin/ls ls -Rl
 total: 40
 .:
@@ -657,7 +657,7 @@ exec.script exec0.script
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
 ~/rshell
-
+//all 3 flags
 wlee030@hammer $ bin/ls ls -alR
 total: 64
 .:
@@ -840,7 +840,7 @@ drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
 ~/rshell
-
+//all 3 flags with spaces
 wlee030@hammer $ bin/ls ls 0a [K[K[K-a -l -R
 total: 64
 .:
@@ -1023,7 +1023,7 @@ drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
 ~/rshell
-
+//all 3 flags with a folder
 wlee030@hammer $ bin/ls ls src -alR
 total: 32
 src:
@@ -1034,7 +1034,7 @@ drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
 ~/rshell
-
+//3 flags seperated with spaces with folder
 wlee030@hammer $ bin/ls ls src -a -l -R
 total: 32
 src:
@@ -1045,13 +1045,13 @@ drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
 ~/rshell
-
+//ls with -aR and directory
 wlee030@hammer $ bin/ls ls -aR src
 src:
 . .. ls.cpp main.cpp 
 
 ~/rshell
-
+//-Rl with directory
 wlee030@hammer $ bin/ls ls -Rl src
 total: 24
 src:
@@ -1060,7 +1060,7 @@ ls.cpp main.cpp
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
 ~/rshell
-
+//-al with directory
 wlee030@hammer $ bin/ls ls -a[Kal src
 total: 32
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
@@ -1068,27 +1068,27 @@ drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
 ~/rshell
-
+//bad flag
 wlee030@hammer $ bin/ls ls -a -l -G
 bad input: Success
 ~/rshell
-
+//bad flag with directory
 wlee030@hammer $ bin/ls ls -G f[Ksrc
 bad input: Success
 ~/rshell
-
+//ls with lots of -
 wlee030@hammer $ -[Kbin/ls ls ---------------------------
 bad input: Success
 ~/rshell
-
+//lalalalalalalalala
 wlee030@hammer $ bin/ls ls lalalalalalalaala
 opendir failed: No such file or directory
 ~/rshell
-
+//./ 
 wlee030@hammer $ bin/ls ls ./ 
 bin LICENSE ls.script Makefile README.md src test 
 ~/rshell
-
+//./ -R. it deletes the extra /
 wlee030@hammer $ bin/ls ls ./ -R
 .:
 bin LICENSE ls.script Makefile README.md src test 
@@ -1101,11 +1101,101 @@ main.cpp ls.cpp
 
 ./test:
 exec.script exec0.script 
-
 ~/rshell
-
+//ls with . . .
 wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ...
 opendir failed: No such file or directory
+~/rshell
+//ls with #
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls #
+bin LICENSE Makefile README.md src test 
+~/rshell
+//with comma
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ,
+opendir failed: No such file or directory
+~/rshell
+//with a carrot
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ^
+opendir failed: No such file or directory
+~/rshell
+//with tilda
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ~
+_CACHE_CLEAN_ addons.sqlite blocklist.xml bookmarkbackups Cache cert8.db cert_override.txt chromeappsstore.sqlite compatibility.ini content-prefs.sqlite cookies.sqlite cookies.sqlite-shm cookies.sqlite-wal cs010 cs012 CS100 Desktop Documents download Downloads downloads.sqlite extensions.ini extensions.sqlite formhistory.sqlite healthreport healthreport.sqlite healthreport.sqlite-shm indexedDB key3.db lab1 lab1.tgz lab4.tgz lab4ex2.asm lab5.cpp lab5.tgz localstore.rdf marionette.log mimeTypes.rdf Music permissions.sqlite Pictures places.sqlite places.sqlite-shm places.sqlite-wal pluginreg.dat prefs.js Public rshell safebrowsing search.json secmod.db sessionstore.bak sessionstore.js signons.sqlite startupCache Templates thumbnails ucr-cs100 urlclassifierkey3.txt Videos vimrc webapps webappsstore.sqlite webappsstore.sqlite-shm webappsstore.sqlite-wal 
+~/rshell
+//with slash and backslash
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls \/
+opendir failed: No such file or directory
+~/rshell
+//ls with star
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls *
+bin:
+ls rshell 
+LICENSE:
+opendir failed: Not a directory
+~/rshell
+// with less than and greater
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls <><><><
+bash: syntax error near unexpected token `<>'
+~/rshell
+//with % signs
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls %%%%
+opendir failed: No such file or directory
+~/rshell
+//with @ sign
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls @
+opendir failed: No such file or directory
+~/rshell
+// with all the /
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls //////////////
+bin boot C:\nppdf32Log\debuglog.txt cgroup class dev etc extra home lib lib64 lost+found media misc mnt net opt proc root sbin selinux srv sys tmp usr var 
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ()
+bash: syntax error near unexpected token `('
+~/rshell
+//with or connector
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ||
+> ^C
+~/rshell
+// with all the && connector
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls &&
+> ^C
+~/rshell
+// with all the _______
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls __________
+opendir failed: No such file or directory
+~/rshell
+//question marks
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ?????
+opendir failed: No such file or directory
+~/rshell
+//with "
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ""
+opendir failed: No such file or directory
+~/rshell
+//with = sign
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls =
+opendir failed: No such file or directory
+~/rshell
+//with multiple =
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ======
+opendir failed: No such file or directory
+~/rshell
+//with [ ]
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls []
+opendir failed: No such file or directory
+~/rshell
+//with lots of ;
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ;;;;;
+bash: syntax error near unexpected token `;;'
+~/rshell
+//nothing
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls 
+bin LICENSE Makefile README.md src test 
+~/rshell
+//lots of !
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls !!!!!
+bin/ls ls bin/ls ls bin/ls ls !
+bin/ls:
+opendir failed: Not a directory
 
 ~/rshell
 
