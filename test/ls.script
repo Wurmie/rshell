@@ -1,20 +1,26 @@
 Script started on Sun 08 Feb 2015 10:36:09 PM PST
-~
+~
+
 wlee030@hammer $ cd rshell
-~/rshell
+~/rshell
+
 wlee030@hammer $ make
 mkdir -p ./bin
 g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
 g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
-~/rshell
+~/rshell
+
 wlee030@hammer $ #a flag only
-~/rshell
+~/rshell
+
 wlee030@hammer $ -a[K[Kbin/ls ls -a
 . .. bin .git LICENSE ls.script Makefile README.md src test 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -a -a -a -a -a -a -a -a -a -a-[K -a
 . .. bin .git LICENSE ls.script Makefile README.md src test 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -l
 total: 40
 drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
@@ -24,7 +30,8 @@ drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
 -rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -l -l -l-[K -l -l -l -l -l -l -l -l
 total: 40
 drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
@@ -34,7 +41,8 @@ drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
 -rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -R -R -R -R-[K -R -R -R -R -R -R -R
 .:
 bin LICENSE ls.script Makefile README.md src test 
@@ -48,25 +56,31 @@ main.cpp ls.cpp
 ./test:
 exec.script exec0.script 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -G
 bad input: Success
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src
 ls.cpp main.cpp 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src README.md
 src:
 ls.cpp main.cpp 
 README.md:
 opendir failed: Not a directory
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src/main.cpp
 opendir failed: Not a directory
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin [K/ls ls main.cpp/src
 opendir failed: No such file or directory
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src src src src src c[Ksrc src src
 src:
 ls.cpp main.cpp 
@@ -84,38 +98,45 @@ src:
 ls.cpp main.cpp 
 src:
 ls.cpp main.cpp 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls ffkfkfkfkf
 opendir failed: No such file or directory
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src README.d[Kmd src
 src:
 ls.cpp main.cpp 
 README.md:
 opendir failed: Not a directory
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls sdfasdfa/[K src asdfasdf
 sdfasdfa:
 opendir failed: No such file or directory
-~/rshell
+~/rshell
+
 wlee030@hammer $ l[Kbin/ls ls src -a src
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src src -a
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -a src src
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -l src src
 src:
 total: 24
@@ -125,7 +146,8 @@ src:
 total: 24
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src -l src
 src:
 total: 24
@@ -135,7 +157,8 @@ src:
 total: 24
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src src -l
 src:
 total: 24
@@ -145,7 +168,8 @@ src:
 total: 24
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -R src src
 src:
 src:
@@ -155,7 +179,8 @@ src:
 src:
 ls.cpp main.cpp 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src -R src
 src:
 src:
@@ -165,7 +190,8 @@ src:
 src:
 ls.cpp main.cpp 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src src -R
 src:
 src:
@@ -175,13 +201,15 @@ src:
 src:
 ls.cpp main.cpp 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src src - [Ka -a -a -a -a -a -a -a -a -a -a -a -a
 src:
 . .. ls.cpp main.cpp 
 src:
 . .. ls.cpp main.cpp 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -al -[K[K
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -194,7 +222,8 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 -rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -a -l
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -207,7 +236,8 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 -rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -la
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -220,7 +250,8 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 -rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -l -a
 total: 64
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
@@ -233,7 +264,8 @@ drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
 -rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
 drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -a -R
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -298,7 +330,8 @@ wlee030@hammer $ bin/ls ls -a -R
 ./test:
 . .. exec.script exec0.script 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -a - R[K[KR
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -363,7 +396,8 @@ wlee030@hammer $ bin/ls ls -a - R[K[KR
 ./test:
 . .. exec.script exec0.script 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -Ra
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -428,7 +462,8 @@ wlee030@hammer $ bin/ls ls -Ra
 ./test:
 . .. exec.script exec0.script 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bn[Kin/ls ls -R -a
 .:
 . .. bin .git LICENSE ls.script Makefile README.md src test 
@@ -493,7 +528,8 @@ wlee030@hammer $ bn[Kin/ls ls -R -a
 ./test:
 . .. exec.script exec0.script 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -lR
 total: 40
 .:
@@ -524,7 +560,8 @@ exec.script exec0.script
 
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -l -R
 total: 40
 .:
@@ -555,7 +592,8 @@ exec.script exec0.script
 
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls 0R[K[K-R -l
 total: 40
 .:
@@ -586,7 +624,8 @@ exec.script exec0.script
 
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -Rl
 total: 40
 .:
@@ -617,7 +656,8 @@ exec.script exec0.script
 
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -alR
 total: 64
 .:
@@ -799,7 +839,8 @@ drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls 0a [K[K[K-a -l -R
 total: 64
 .:
@@ -981,7 +1022,8 @@ drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
 -rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src -alR
 total: 32
 src:
@@ -991,7 +1033,8 @@ drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls src -a -l -R
 total: 32
 src:
@@ -1001,12 +1044,14 @@ drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -aR src
 src:
 . .. ls.cpp main.cpp 
 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -Rl src
 total: 24
 src:
@@ -1014,29 +1059,36 @@ ls.cpp main.cpp
 
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -a[Kal src
 total: 32
 drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
 drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
 -rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
 -rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -a -l -G
 bad input: Success
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls -G f[Ksrc
 bad input: Success
-~/rshell
+~/rshell
+
 wlee030@hammer $ -[Kbin/ls ls ---------------------------
 bad input: Success
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls lalalalalalalaala
 opendir failed: No such file or directory
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls ./ 
 bin LICENSE ls.script Makefile README.md src test 
-~/rshell
+~/rshell
+
 wlee030@hammer $ bin/ls ls ./ -R
 .:
 bin LICENSE ls.script Makefile README.md src test 
@@ -1050,7 +1102,13 @@ main.cpp ls.cpp
 ./test:
 exec.script exec0.script 
 
-~/rshell
+~/rshell
+
+wlee030@cs100:~/rshell ((hw1)) $ bin/ls ls ...
+opendir failed: No such file or directory
+
+~/rshell
+
 wlee030@hammer $ exit
 exit
 
