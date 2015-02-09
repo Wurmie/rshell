@@ -46,11 +46,11 @@ Need to run the program:
 	* vim
 
 ##Bugs/Limitations/Issues
+rshell.cpp
 	* # do not work when appended to other characters
 	* tab does not work sometimes
 	* if connectors are by itself, will not work
-##Things not to do
-Does not do
+
 ls.cpp
 
 	* when all 3 flags are passed with file, does not output everything
