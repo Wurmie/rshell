@@ -52,6 +52,7 @@ Need to run the program:
 ##Things not to do
 Does not do
 ls.cpp
+
 	* when all 3 flags are passed with file, does not output everything
 	
 	* R sometimes does not work properly
