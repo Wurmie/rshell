@@ -12,26 +12,26 @@ To run the program for RShell:
 
 ``$git clone https://github.com/Wurmie/rshell.git``
 
-$cd rshell
+``$cd rshell``
 
-$git checkout hw0
+``$git checkout hw0``
 
-$make
+``$make``
 
 ``$bin/rshell``
 
 
 To run the program for ls:
 
-``$git clone https://github.com/wurmie/rshell.git
+``$git clone https://github.com/wurmie/rshell.git``
 
-$cd rshell
+``$cd rshell``
 
-$git checkout hw1
+``$git checkout hw1``
 
-$make
+``$make``
 
-$bin/ls``
+``$bin/ls``
 
 For ls, you need to add ls after bin/ls. ex: bin/ls ls (flags here)
 ##Prerequisites
