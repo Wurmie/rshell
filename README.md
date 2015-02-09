@@ -53,9 +53,9 @@ Need to run the program:
 Does not do
 ls.cpp
 	* when all 3 flags are passed with file, does not output everything
-	* 
+	
 	* R sometimes does not work properly
-	* 
+	 
 	* None of the special characters work properly.
-	* 
+	 
 	* multiple /'s do not work properly
