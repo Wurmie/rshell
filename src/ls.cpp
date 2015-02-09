@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <cstring>
-
+#include <iomanip>
 //turn flags on
 bool whichFlags(char* command,std::vector<bool> &flaggs)
 {
@@ -93,12 +93,14 @@ std::string getPermission(struct stat& stuff)
 	return permission;
 	
 }
-void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags)
+//l = 0, a = 1, R = 2
+void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::string currentPath)
 {
 	//only need to do -l and -R
 	struct stat permissionLines;
 	std::string theTime;
 	bool Aonly = false;
+	std::string newPath;
 	for(size_t r = 0;r < fileN.size();r++)
 	{
 		if(!Flags[0] && !Flags[2])
@@ -107,22 +109,23 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags)
 				Aonly = true;
 			std::cout << fileN[r] << " ";
 		}
-		if(Flags[2])
+		else
 		{
-			while()
-			{
+		//	while()
+		//	{
 				if(Flags[0])
-				{	
+				{
+					newPath = currentPath + "/" + fileN[r];
 					//error
-					if(stat(fileN[r].c_str(),&permissionLines) != 0)
+					if(stat(newPath.c_str(),&permissionLines) != 0)
 					{
 						perror("stat error");
 						exit(1);
 					}
 					//get permission
-					std::cout << getPermission(permissionLines) << " ";
+					std::cout << getPermission(permissionLines)<< std::left << std::setw(7) << " ";
 					//# hard links
-					std::cout << permissionLines.st_nlink << " ";
+					std::cout << permissionLines.st_nlink << std::left << std::setw(7) << " ";
 					
 					struct passwd *user = getpwuid(permissionLines.st_uid);
 					if(user == NULL)
@@ -131,7 +134,7 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags)
 						exit(1);
 					}
 					else
-						std::cout << user->pw_name << " ";
+						std::cout << user->pw_name << std::left << std::setw(7) << " ";
 					struct group *groupid = getgrgid(permissionLines.st_gid);
 					if(groupid == NULL)
 					{
@@ -139,22 +142,36 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags)
 						exit(1);
 					}
 					else
-						std::cout << groupid->gr_name << " ";
+						std::cout << groupid->gr_name << std::left << std::setw(7) << " ";
 					//need error check 
-					std::cout << permissionLines.st_size << " ";
+					std::cout << permissionLines.st_size << std::left << std::setw(7) << " ";
 					
 					theTime = ctime(&permissionLines.st_mtime);
 					theTime = theTime.substr(4,theTime.length()-9);
 					
-					std::cout << theTime << " ";
+					std::cout << theTime << std::left << std::setw(7) << " ";
 					std::cout << fileN[r];
 					std::cout << std::endl;
-				}
+		
 			}
-		}
+	
+			}
+	//	}
+		if(Aonly)
+			std::cout << std::endl;
 	}
-	if(Aonly)
-		std::cout << std::endl;
+}
+
+bool howToSort(std::string first,std::string second)
+{
+	if(first[0] == '.' && second[0] != '.')	//first has dot, second does not
+		return (tolower(first[1]) < tolower(second[0]));
+	else if(first[0] == '.' && second[0] == '.') //first has dot and second has dot
+		return (tolower(first[1]) < tolower(second[1]));
+	else if(first[0] !='.' && second[0] == '.') //first does not and second does
+		return (tolower(first[0]) < tolower(second[1]));
+	else 						//first does not and second does not
+		return (tolower(first[0]) < tolower(second[0]));
 }
 
 //get an array of char pointers(arrays)
@@ -208,7 +225,7 @@ int main(int argc,char** argv)
 //			std::cout << paths[e] << " ";
 		dirent *direntp;
 		std::vector<std::string> filenames;
-		std::vector<std::string> multipleF;
+//		std::vector<std::string> multipleF;
 		//put -R into a different vector and put that through to the function
 		//somehow open each directory
 		//go through the paths?
@@ -233,12 +250,18 @@ int main(int argc,char** argv)
 				}
 				//sort out -a now
 				char firstDirChar = direntp->d_name[0];
-				if(theFlags[1])
-					filenames.push_back(direntp->d_name);
+				if(dirp == NULL)
+					perror("file does not exist");
 				else
 				{
-					if(firstDirChar != '.')
+					//check if file exists
+					if (theFlags[1])
 						filenames.push_back(direntp->d_name);
+					else
+					{
+						if(firstDirChar != '.')
+							filenames.push_back(direntp->d_name);
+					}
 				}
 				
 			}
@@ -246,10 +269,10 @@ int main(int argc,char** argv)
 			if(closedir(dirp) == -1)
 				perror("closedir failed");
 
-			std::sort(filenames.begin(),filenames.end());	
+			std::sort(filenames.begin(),filenames.end(),howToSort);	
 	//		for(size_t u = 0;u < filenames.size();u++)
 	//			std::cout << filenames[u] << " ";
-			outputFormat(filenames,theFlags);
+			outputFormat(filenames,theFlags,paths[x]);
 			filenames.clear();
 		}
 	}
