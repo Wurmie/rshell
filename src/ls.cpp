@@ -29,6 +29,11 @@ bool whichFlags(char* command,std::vector<bool> &flaggs)
 	//first char needs to be -
 	if(command[0] != '-')
 		isValid = false;
+	if(counter == 1)
+	{
+		perror("no files or directory");
+		exit(1);
+	}
 	while(isValid && k < counter)
 	{
 		if(command[k] != 'l' && command[k] != 'R' && command[k] != 'a')
@@ -166,6 +171,8 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 			else
 			{	
 				newPath = currentPath + "/" + fileN[r];
+		//		if(newPath[newPath.size()-1] == '/')
+		//			newPath = newPath.substr(0,newPath.size()-3);
 		//		std::cout << newPath << std::endl;
 				//	newPath = currentPath + "/" + fileN[r];
 					//error
@@ -330,6 +337,8 @@ int main(int argc,char** argv)
 				}
 				else		//it is a path(right or wrong)
 				{
+					if(comm[comm.size()-1] == '/')
+						comm = comm.substr(0,comm.size()-1);
 					paths.push_back(comm);
 				}
 			}
