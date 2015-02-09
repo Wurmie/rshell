@@ -67,4 +67,6 @@ ls.cpp
 #Comments
 	to save space, I hard commented each test case. 
 	
-	If I try to comment in bash, it wastes too much space and too hard to read. Sorry. And sorry again for the backspaces.
+	If I try to comment in bash, it wastes too much space and too hard to read. 
+	
+	Sorry. And sorry again for the backspaces.
