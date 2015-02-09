@@ -65,4 +65,6 @@ ls.cpp
 	* multiple /'s do not work properly
 
 #Comments
-	to save space, I hard commented each test case. If I try to comment in bash, it wastes too much space and too hard to read. Sorry. And sorry again for the backspaces.
+	to save space, I hard commented each test case. 
+	
+	If I try to comment in bash, it wastes too much space and too hard to read. Sorry. And sorry again for the backspaces.
