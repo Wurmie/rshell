@@ -34,6 +34,8 @@ To run the program for ls:
 ``$bin/ls``
 
 For ls, you need to add ls after bin/ls. ex: bin/ls ls (flags here)
+
+You might need to go into edit mode. I backspaced alot.
 ##Prerequisites
 Need to run the program:
 
@@ -51,3 +53,4 @@ Need to run the program:
 Does not do
 
 	* no idea yet...
+	* R sometimes does not work properly

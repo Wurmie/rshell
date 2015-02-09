@@ -1,0 +1,1057 @@
+Script started on Sun 08 Feb 2015 10:36:09 PM PST
+~
+wlee030@hammer $ cd rshell
+~/rshell
+wlee030@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
+~/rshell
+wlee030@hammer $ #a flag only
+~/rshell
+wlee030@hammer $ -a[K[Kbin/ls ls -a
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+~/rshell
+wlee030@hammer $ bin/ls ls -a -a -a -a -a -a -a -a -a -a-[K -a
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+~/rshell
+wlee030@hammer $ bin/ls ls -l
+total: 40
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+~/rshell
+wlee030@hammer $ bin/ls ls -l -l -l-[K -l -l -l -l -l -l -l -l
+total: 40
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+~/rshell
+wlee030@hammer $ bin/ls ls -R -R -R -R-[K -R -R -R -R -R -R -R
+.:
+bin LICENSE ls.script Makefile README.md src test 
+
+./bin:
+rshell ls 
+
+./src:
+main.cpp ls.cpp 
+
+./test:
+exec.script exec0.script 
+
+~/rshell
+wlee030@hammer $ bin/ls ls -G
+bad input: Success
+~/rshell
+wlee030@hammer $ bin/ls ls src
+ls.cpp main.cpp 
+~/rshell
+wlee030@hammer $ bin/ls ls src README.md
+src:
+ls.cpp main.cpp 
+README.md:
+opendir failed: Not a directory
+~/rshell
+wlee030@hammer $ bin/ls ls src/main.cpp
+opendir failed: Not a directory
+~/rshell
+wlee030@hammer $ bin [K/ls ls main.cpp/src
+opendir failed: No such file or directory
+~/rshell
+wlee030@hammer $ bin/ls ls src src src src src c[Ksrc src src
+src:
+ls.cpp main.cpp 
+src:
+ls.cpp main.cpp 
+src:
+ls.cpp main.cpp 
+src:
+ls.cpp main.cpp 
+src:
+ls.cpp main.cpp 
+src:
+ls.cpp main.cpp 
+src:
+ls.cpp main.cpp 
+src:
+ls.cpp main.cpp 
+~/rshell
+wlee030@hammer $ bin/ls ls ffkfkfkfkf
+opendir failed: No such file or directory
+~/rshell
+wlee030@hammer $ bin/ls ls src README.d[Kmd src
+src:
+ls.cpp main.cpp 
+README.md:
+opendir failed: Not a directory
+~/rshell
+wlee030@hammer $ bin/ls ls sdfasdfa/[K src asdfasdf
+sdfasdfa:
+opendir failed: No such file or directory
+~/rshell
+wlee030@hammer $ l[Kbin/ls ls src -a src
+src:
+. .. ls.cpp main.cpp 
+src:
+. .. ls.cpp main.cpp 
+~/rshell
+wlee030@hammer $ bin/ls ls src src -a
+src:
+. .. ls.cpp main.cpp 
+src:
+. .. ls.cpp main.cpp 
+~/rshell
+wlee030@hammer $ bin/ls ls -a src src
+src:
+. .. ls.cpp main.cpp 
+src:
+. .. ls.cpp main.cpp 
+~/rshell
+wlee030@hammer $ bin/ls ls -l src src
+src:
+total: 24
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+src:
+total: 24
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+~/rshell
+wlee030@hammer $ bin/ls ls src -l src
+src:
+total: 24
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+src:
+total: 24
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+~/rshell
+wlee030@hammer $ bin/ls ls src src -l
+src:
+total: 24
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+src:
+total: 24
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+~/rshell
+wlee030@hammer $ bin/ls ls -R src src
+src:
+src:
+ls.cpp main.cpp 
+
+src:
+src:
+ls.cpp main.cpp 
+
+~/rshell
+wlee030@hammer $ bin/ls ls src -R src
+src:
+src:
+ls.cpp main.cpp 
+
+src:
+src:
+ls.cpp main.cpp 
+
+~/rshell
+wlee030@hammer $ bin/ls ls src src -R
+src:
+src:
+ls.cpp main.cpp 
+
+src:
+src:
+ls.cpp main.cpp 
+
+~/rshell
+wlee030@hammer $ bin/ls ls src src - [Ka -a -a -a -a -a -a -a -a -a -a -a -a
+src:
+. .. ls.cpp main.cpp 
+src:
+. .. ls.cpp main.cpp 
+~/rshell
+wlee030@hammer $ bin/ls ls -al -[K[K
+total: 64
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
+drwx------  58  wlee030  classes    16384    Feb  8 22:30:40   ..
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+~/rshell
+wlee030@hammer $ bin/ls ls -a -l
+total: 64
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
+drwx------  58  wlee030  classes    16384    Feb  8 22:30:40   ..
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+~/rshell
+wlee030@hammer $ bin/ls ls -la
+total: 64
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
+drwx------  58  wlee030  classes    16384    Feb  8 22:30:40   ..
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+~/rshell
+wlee030@hammer $ bin/ls ls -l -a
+total: 64
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
+drwx------  58  wlee030  classes    16384    Feb  8 22:30:40   ..
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+~/rshell
+wlee030@hammer $ bin/ls ls -a -R
+.:
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+
+./bin:
+. .. rshell ls 
+
+./.git:
+. .. refs branches info hooks description objects HEAD config logs packed-refs index 
+
+./.git/refs:
+. .. heads tags remotes 
+
+./.git/refs/heads:
+. .. master ls 
+
+./.git/refs/tags:
+. .. 
+
+./.git/refs/remotes:
+. .. origin 
+
+./.git/refs/remotes/origin:
+. .. HEAD 
+
+./.git/branches:
+. .. 
+
+./.git/info:
+. .. exclude 
+
+./.git/hooks:
+. .. pre-push.sample pre-rebase.sample applypatch-msg.sample prepare-commit-msg.sample update.sample commit-msg.sample pre-applypatch.sample pre-commit.sample post-update.sample 
+
+./.git/objects:
+. .. pack info 
+
+./.git/objects/pack:
+. .. pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx 
+
+./.git/objects/info:
+. .. 
+
+./.git/logs:
+. .. refs HEAD 
+
+./.git/logs/refs:
+. .. remotes heads 
+
+./.git/logs/refs/remotes:
+. .. origin 
+
+./.git/logs/refs/remotes/origin:
+. .. HEAD 
+
+./.git/logs/refs/heads:
+. .. master ls 
+
+./src:
+. .. main.cpp ls.cpp 
+
+./test:
+. .. exec.script exec0.script 
+
+~/rshell
+wlee030@hammer $ bin/ls ls -a - R[K[KR
+.:
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+
+./bin:
+. .. rshell ls 
+
+./.git:
+. .. refs branches info hooks description objects HEAD config logs packed-refs index 
+
+./.git/refs:
+. .. heads tags remotes 
+
+./.git/refs/heads:
+. .. master ls 
+
+./.git/refs/tags:
+. .. 
+
+./.git/refs/remotes:
+. .. origin 
+
+./.git/refs/remotes/origin:
+. .. HEAD 
+
+./.git/branches:
+. .. 
+
+./.git/info:
+. .. exclude 
+
+./.git/hooks:
+. .. pre-push.sample pre-rebase.sample applypatch-msg.sample prepare-commit-msg.sample update.sample commit-msg.sample pre-applypatch.sample pre-commit.sample post-update.sample 
+
+./.git/objects:
+. .. pack info 
+
+./.git/objects/pack:
+. .. pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx 
+
+./.git/objects/info:
+. .. 
+
+./.git/logs:
+. .. refs HEAD 
+
+./.git/logs/refs:
+. .. remotes heads 
+
+./.git/logs/refs/remotes:
+. .. origin 
+
+./.git/logs/refs/remotes/origin:
+. .. HEAD 
+
+./.git/logs/refs/heads:
+. .. master ls 
+
+./src:
+. .. main.cpp ls.cpp 
+
+./test:
+. .. exec.script exec0.script 
+
+~/rshell
+wlee030@hammer $ bin/ls ls -Ra
+.:
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+
+./bin:
+. .. rshell ls 
+
+./.git:
+. .. refs branches info hooks description objects HEAD config logs packed-refs index 
+
+./.git/refs:
+. .. heads tags remotes 
+
+./.git/refs/heads:
+. .. master ls 
+
+./.git/refs/tags:
+. .. 
+
+./.git/refs/remotes:
+. .. origin 
+
+./.git/refs/remotes/origin:
+. .. HEAD 
+
+./.git/branches:
+. .. 
+
+./.git/info:
+. .. exclude 
+
+./.git/hooks:
+. .. pre-push.sample pre-rebase.sample applypatch-msg.sample prepare-commit-msg.sample update.sample commit-msg.sample pre-applypatch.sample pre-commit.sample post-update.sample 
+
+./.git/objects:
+. .. pack info 
+
+./.git/objects/pack:
+. .. pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx 
+
+./.git/objects/info:
+. .. 
+
+./.git/logs:
+. .. refs HEAD 
+
+./.git/logs/refs:
+. .. remotes heads 
+
+./.git/logs/refs/remotes:
+. .. origin 
+
+./.git/logs/refs/remotes/origin:
+. .. HEAD 
+
+./.git/logs/refs/heads:
+. .. master ls 
+
+./src:
+. .. main.cpp ls.cpp 
+
+./test:
+. .. exec.script exec0.script 
+
+~/rshell
+wlee030@hammer $ bn[Kin/ls ls -R -a
+.:
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+
+./bin:
+. .. rshell ls 
+
+./.git:
+. .. refs branches info hooks description objects HEAD config logs packed-refs index 
+
+./.git/refs:
+. .. heads tags remotes 
+
+./.git/refs/heads:
+. .. master ls 
+
+./.git/refs/tags:
+. .. 
+
+./.git/refs/remotes:
+. .. origin 
+
+./.git/refs/remotes/origin:
+. .. HEAD 
+
+./.git/branches:
+. .. 
+
+./.git/info:
+. .. exclude 
+
+./.git/hooks:
+. .. pre-push.sample pre-rebase.sample applypatch-msg.sample prepare-commit-msg.sample update.sample commit-msg.sample pre-applypatch.sample pre-commit.sample post-update.sample 
+
+./.git/objects:
+. .. pack info 
+
+./.git/objects/pack:
+. .. pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx 
+
+./.git/objects/info:
+. .. 
+
+./.git/logs:
+. .. refs HEAD 
+
+./.git/logs/refs:
+. .. remotes heads 
+
+./.git/logs/refs/remotes:
+. .. origin 
+
+./.git/logs/refs/remotes/origin:
+. .. HEAD 
+
+./.git/logs/refs/heads:
+. .. master ls 
+
+./src:
+. .. main.cpp ls.cpp 
+
+./test:
+. .. exec.script exec0.script 
+
+~/rshell
+wlee030@hammer $ bin/ls ls -lR
+total: 40
+.:
+bin LICENSE ls.script Makefile README.md src test 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+total: 96
+./bin:
+rshell ls 
+
+-rwx------  1  wlee030  classes    31589    Feb  8 22:32:44   rshell
+-rwx------  1  wlee030  classes    63244    Feb  8 22:32:45   ls
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+total: 24
+./src:
+main.cpp ls.cpp 
+
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+total: 16
+./test:
+exec.script exec0.script 
+
+-rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
+-rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
+~/rshell
+wlee030@hammer $ bin/ls ls -l -R
+total: 40
+.:
+bin LICENSE ls.script Makefile README.md src test 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+total: 96
+./bin:
+rshell ls 
+
+-rwx------  1  wlee030  classes    31589    Feb  8 22:32:44   rshell
+-rwx------  1  wlee030  classes    63244    Feb  8 22:32:45   ls
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+total: 24
+./src:
+main.cpp ls.cpp 
+
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+total: 16
+./test:
+exec.script exec0.script 
+
+-rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
+-rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
+~/rshell
+wlee030@hammer $ bin/ls ls 0R[K[K-R -l
+total: 40
+.:
+bin LICENSE ls.script Makefile README.md src test 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+total: 96
+./bin:
+rshell ls 
+
+-rwx------  1  wlee030  classes    31589    Feb  8 22:32:44   rshell
+-rwx------  1  wlee030  classes    63244    Feb  8 22:32:45   ls
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+total: 24
+./src:
+main.cpp ls.cpp 
+
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+total: 16
+./test:
+exec.script exec0.script 
+
+-rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
+-rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
+~/rshell
+wlee030@hammer $ bin/ls ls -Rl
+total: 40
+.:
+bin LICENSE ls.script Makefile README.md src test 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+total: 96
+./bin:
+rshell ls 
+
+-rwx------  1  wlee030  classes    31589    Feb  8 22:32:44   rshell
+-rwx------  1  wlee030  classes    63244    Feb  8 22:32:45   ls
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+total: 24
+./src:
+main.cpp ls.cpp 
+
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+total: 16
+./test:
+exec.script exec0.script 
+
+-rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
+-rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
+~/rshell
+wlee030@hammer $ bin/ls ls -alR
+total: 64
+.:
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
+drwx------  58  wlee030  classes    16384    Feb  8 22:30:40   ..
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+total: 104
+./bin:
+. .. rshell ls 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rwx------  1  wlee030  classes    31589    Feb  8 22:32:44   rshell
+-rwx------  1  wlee030  classes    63244    Feb  8 22:32:45   ls
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
+total: 48
+./.git:
+. .. refs branches info hooks description objects HEAD config logs packed-refs index 
+
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   refs
+total: 20
+./.git/refs:
+. .. heads tags remotes 
+
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   heads
+total: 8
+./.git/refs/heads:
+. .. master ls 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   .
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    41    Feb  8 21:33:57   master
+-rw-------  1  wlee030  classes    41    Feb  8 21:34:10   ls
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   tags
+total: 8
+./.git/refs/tags:
+. .. 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   remotes
+total: 12
+./.git/refs/remotes:
+. .. origin 
+
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   origin
+total: 8
+./.git/refs/remotes/origin:
+. .. HEAD 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    32    Feb  8 21:33:57   HEAD
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   branches
+total: 8
+./.git/branches:
+. .. 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   info
+total: 12
+./.git/info:
+. .. exclude 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+-rw-------  1  wlee030  classes    240    Feb  8 21:33:56   exclude
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   hooks
+total: 48
+./.git/hooks:
+. .. pre-push.sample pre-rebase.sample applypatch-msg.sample prepare-commit-msg.sample update.sample commit-msg.sample pre-applypatch.sample pre-commit.sample post-update.sample 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+-rwx------  1  wlee030  classes    1348    Feb  8 21:33:56   pre-push.sample
+-rwx------  1  wlee030  classes    4951    Feb  8 21:33:56   pre-rebase.sample
+-rwx------  1  wlee030  classes    452    Feb  8 21:33:56   applypatch-msg.sample
+-rwx------  1  wlee030  classes    1239    Feb  8 21:33:56   prepare-commit-msg.sample
+-rwx------  1  wlee030  classes    3611    Feb  8 21:33:56   update.sample
+-rwx------  1  wlee030  classes    896    Feb  8 21:33:56   commit-msg.sample
+-rwx------  1  wlee030  classes    398    Feb  8 21:33:56   pre-applypatch.sample
+-rwx------  1  wlee030  classes    1635    Feb  8 21:33:56   pre-commit.sample
+-rwx------  1  wlee030  classes    189    Feb  8 21:33:56   post-update.sample
+-rw-------  1  wlee030  classes    73    Feb  8 21:33:56   description
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   objects
+total: 16
+./.git/objects:
+. .. pack info 
+
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   pack
+total: 80
+./.git/objects/pack:
+. .. pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   ..
+-r--------  1  wlee030  classes    65136    Feb  8 21:33:57   pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack
+-r--------  1  wlee030  classes    7680    Feb  8 21:33:57   pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   info
+total: 8
+./.git/objects/info:
+. .. 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   ..
+-rw-------  1  wlee030  classes    19    Feb  8 21:34:10   HEAD
+-rw-------  1  wlee030  classes    315    Feb  8 21:34:10   config
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   logs
+total: 16
+./.git/logs:
+. .. refs HEAD 
+
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   refs
+total: 16
+./.git/logs/refs:
+. .. remotes heads 
+
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   remotes
+total: 12
+./.git/logs/refs/remotes:
+. .. origin 
+
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   origin
+total: 12
+./.git/logs/refs/remotes/origin:
+. .. HEAD 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    188    Feb  8 21:33:57   HEAD
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   heads
+total: 16
+./.git/logs/refs/heads:
+. .. master ls 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    188    Feb  8 21:33:57   master
+-rw-------  1  wlee030  classes    183    Feb  8 21:34:10   ls
+-rw-------  1  wlee030  classes    362    Feb  8 21:34:10   HEAD
+-rw-------  1  wlee030  classes    334    Feb  8 21:33:57   packed-refs
+-rw-------  1  wlee030  classes    568    Feb  8 21:34:10   index
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+total: 32
+./src:
+. .. main.cpp ls.cpp 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+total: 24
+./test:
+. .. exec.script exec0.script 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
+-rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
+~/rshell
+wlee030@hammer $ bin/ls ls 0a [K[K[K-a -l -R
+total: 64
+.:
+. .. bin .git LICENSE ls.script Makefile README.md src test 
+
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   .
+drwx------  58  wlee030  classes    16384    Feb  8 22:30:40   ..
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   bin
+total: 104
+./bin:
+. .. rshell ls 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:32:45   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rwx------  1  wlee030  classes    31589    Feb  8 22:32:44   rshell
+-rwx------  1  wlee030  classes    63244    Feb  8 22:32:45   ls
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .git
+total: 48
+./.git:
+. .. refs branches info hooks description objects HEAD config logs packed-refs index 
+
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   refs
+total: 20
+./.git/refs:
+. .. heads tags remotes 
+
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   heads
+total: 8
+./.git/refs/heads:
+. .. master ls 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   .
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    41    Feb  8 21:33:57   master
+-rw-------  1  wlee030  classes    41    Feb  8 21:34:10   ls
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   tags
+total: 8
+./.git/refs/tags:
+. .. 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   remotes
+total: 12
+./.git/refs/remotes:
+. .. origin 
+
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  5  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   origin
+total: 8
+./.git/refs/remotes/origin:
+. .. HEAD 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    32    Feb  8 21:33:57   HEAD
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   branches
+total: 8
+./.git/branches:
+. .. 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   info
+total: 12
+./.git/info:
+. .. exclude 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+-rw-------  1  wlee030  classes    240    Feb  8 21:33:56   exclude
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   hooks
+total: 48
+./.git/hooks:
+. .. pre-push.sample pre-rebase.sample applypatch-msg.sample prepare-commit-msg.sample update.sample commit-msg.sample pre-applypatch.sample pre-commit.sample post-update.sample 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+-rwx------  1  wlee030  classes    1348    Feb  8 21:33:56   pre-push.sample
+-rwx------  1  wlee030  classes    4951    Feb  8 21:33:56   pre-rebase.sample
+-rwx------  1  wlee030  classes    452    Feb  8 21:33:56   applypatch-msg.sample
+-rwx------  1  wlee030  classes    1239    Feb  8 21:33:56   prepare-commit-msg.sample
+-rwx------  1  wlee030  classes    3611    Feb  8 21:33:56   update.sample
+-rwx------  1  wlee030  classes    896    Feb  8 21:33:56   commit-msg.sample
+-rwx------  1  wlee030  classes    398    Feb  8 21:33:56   pre-applypatch.sample
+-rwx------  1  wlee030  classes    1635    Feb  8 21:33:56   pre-commit.sample
+-rwx------  1  wlee030  classes    189    Feb  8 21:33:56   post-update.sample
+-rw-------  1  wlee030  classes    73    Feb  8 21:33:56   description
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   objects
+total: 16
+./.git/objects:
+. .. pack info 
+
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   pack
+total: 80
+./.git/objects/pack:
+. .. pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   ..
+-r--------  1  wlee030  classes    65136    Feb  8 21:33:57   pack-fdf52b18243c9c977e3ff06ebecc854354b45824.pack
+-r--------  1  wlee030  classes    7680    Feb  8 21:33:57   pack-fdf52b18243c9c977e3ff06ebecc854354b45824.idx
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   info
+total: 8
+./.git/objects/info:
+. .. 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:56   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:56   ..
+-rw-------  1  wlee030  classes    19    Feb  8 21:34:10   HEAD
+-rw-------  1  wlee030  classes    315    Feb  8 21:34:10   config
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   logs
+total: 16
+./.git/logs:
+. .. refs HEAD 
+
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  8  wlee030  classes    4096    Feb  8 21:34:10   ..
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   refs
+total: 16
+./.git/logs/refs:
+. .. remotes heads 
+
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   remotes
+total: 12
+./.git/logs/refs/remotes:
+. .. origin 
+
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   ..
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   origin
+total: 12
+./.git/logs/refs/remotes/origin:
+. .. HEAD 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  3  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    188    Feb  8 21:33:57   HEAD
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   heads
+total: 16
+./.git/logs/refs/heads:
+. .. master ls 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:34:10   .
+drwx------  4  wlee030  classes    4096    Feb  8 21:33:57   ..
+-rw-------  1  wlee030  classes    188    Feb  8 21:33:57   master
+-rw-------  1  wlee030  classes    183    Feb  8 21:34:10   ls
+-rw-------  1  wlee030  classes    362    Feb  8 21:34:10   HEAD
+-rw-------  1  wlee030  classes    334    Feb  8 21:33:57   packed-refs
+-rw-------  1  wlee030  classes    568    Feb  8 21:34:10   index
+-rw-------  1  wlee030  classes    17507    Feb  8 21:33:57   LICENSE
+-rw-------  1  wlee030  classes    0    Feb  8 22:32:34   ls.script
+-rw-------  1  wlee030  classes    464    Feb  8 21:34:10   Makefile
+-rw-------  1  wlee030  classes    1283    Feb  8 21:34:10   README.md
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   src
+total: 32
+./src:
+. .. main.cpp ls.cpp 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   test
+total: 24
+./test:
+. .. exec.script exec0.script 
+
+drwx------  2  wlee030  classes    4096    Feb  8 21:33:57   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rw-------  1  wlee030  classes    5542    Feb  8 21:33:57   exec.script
+-rw-------  1  wlee030  classes    4816    Feb  8 21:33:57   exec0.script
+~/rshell
+wlee030@hammer $ bin/ls ls src -alR
+total: 32
+src:
+. .. ls.cpp main.cpp 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+~/rshell
+wlee030@hammer $ bin/ls ls src -a -l -R
+total: 32
+src:
+. .. ls.cpp main.cpp 
+
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+~/rshell
+wlee030@hammer $ bin/ls ls -aR src
+src:
+. .. ls.cpp main.cpp 
+
+~/rshell
+wlee030@hammer $ bin/ls ls -Rl src
+total: 24
+src:
+ls.cpp main.cpp 
+
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+~/rshell
+wlee030@hammer $ bin/ls ls -a[Kal src
+total: 32
+drwx------  2  wlee030  classes    4096    Feb  8 22:30:40   .
+drwx------  6  wlee030  classes    4096    Feb  8 22:32:34   ..
+-rw-------  1  wlee030  classes    10329    Feb  8 22:30:40   ls.cpp
+-rw-------  1  wlee030  classes    10738    Feb  8 21:34:10   main.cpp
+~/rshell
+wlee030@hammer $ bin/ls ls -a -l -G
+bad input: Success
+~/rshell
+wlee030@hammer $ bin/ls ls -G f[Ksrc
+bad input: Success
+~/rshell
+wlee030@hammer $ -[Kbin/ls ls ---------------------------
+bad input: Success
+~/rshell
+wlee030@hammer $ bin/ls ls lalalalalalalaala
+opendir failed: No such file or directory
+~/rshell
+wlee030@hammer $ bin/ls ls ./ 
+bin LICENSE ls.script Makefile README.md src test 
+~/rshell
+wlee030@hammer $ bin/ls ls ./ -R
+.:
+bin LICENSE ls.script Makefile README.md src test 
+
+./bin:
+rshell ls 
+
+./src:
+main.cpp ls.cpp 
+
+./test:
+exec.script exec0.script 
+
+~/rshell
+wlee030@hammer $ exit
+exit
+
+Script done on Sun 08 Feb 2015 10:47:05 PM PST
