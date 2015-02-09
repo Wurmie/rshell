@@ -10,7 +10,7 @@ Even though echo and ls are different commands, when testing, they are the same 
 
 To run the program for RShell:
 
-``$git clone https://github.com/Wurmie/rshell.git
+``$git clone https://github.com/Wurmie/rshell.git``
 
 $cd rshell
 
@@ -18,7 +18,7 @@ $git checkout hw0
 
 $make
 
-$bin/rshell``
+``$bin/rshell``
 
 
 To run the program for ls:
