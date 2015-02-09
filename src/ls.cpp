@@ -116,17 +116,21 @@ std::string getPermission(struct stat& stuff)
 //l = 0, a = 1, R = 2
 void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::string currentPath)
 {
+	//for(size_t ao = 0; ao < fileN.size();ao++)
+	//	std::cout << fileN[ao] << " ";
+//	std::cout << std::endl;
 	//only need to do -l and -R
 	struct stat permissionLines;
 	std::string theTime;
 	bool Aonly = false;
 	std::string newPath;
 	size_t TotBlocks = 0;	
+	std::string newPath2;
 
 	for(size_t y = 0; y < fileN.size();y++)
 	{
-		newPath = currentPath + "/" + fileN[y];
-		if(stat(newPath.c_str(),&permissionLines) == -1)
+		newPath2 = currentPath + "/" + fileN[y];
+		if(stat(newPath2.c_str(),&permissionLines) == -1)
 		{
 			perror("error in blocks");
 			exit(1);
@@ -139,28 +143,39 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 		TotBlocks = TotBlocks / 2;
 		std::cout << "total: " << TotBlocks << std::endl;
 	}
-
-	for(size_t r = 0;r < fileN.size();r++)
+	if(Flags[2])
 	{
-		if(!Flags[0] && !Flags[2])
+		if(fileN.size() == 0)
+			fileN.push_back(".");
+		
+		std::cout << currentPath << ":" << std::endl;
+		for(size_t q = 0;q < fileN.size();q++)
+			std::cout << fileN[q] << " ";
+		std::cout << std::endl << std::endl;
+	}
+//	if(Flags[2])
+//	{
+		for(size_t r = 0;r < fileN.size();r++)
 		{
-			if(!Aonly)
-				Aonly = true;
-			std::cout << fileN[r] << " ";
-		}
-		else
-		{
-		//	while()
-		//	{
+			if(!Flags[0] && !Flags[2])
+			{
+				if(!Aonly)
+					Aonly = true;
+				std::cout << fileN[r] << " ";
+			}	
+			else
+			{	
+				newPath = currentPath + "/" + fileN[r];
+		//		std::cout << newPath << std::endl;
+				//	newPath = currentPath + "/" + fileN[r];
+					//error
+				if(stat(newPath.c_str(),&permissionLines) != 0)
+				{
+					perror("stat error");
+					exit(1);
+				}
 				if(Flags[0])
 				{
-					newPath = currentPath + "/" + fileN[r];
-					//error
-					if(stat(newPath.c_str(),&permissionLines) != 0)
-					{
-						perror("stat error");
-						exit(1);
-					}
 					//get permission
 					std::cout << getPermission(permissionLines)<< std::left << std::setw(2) << " ";
 					//# hard links
@@ -192,13 +207,68 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 					std::cout << fileN[r] << std::left << std::setw(2);
 					std::cout << std::endl;
 		
+				}
+			
+				if(Flags[2])
+				{
+					//std::cout << currentPath << ":" << std::endl;
+				//	std::cout << fileN[r] << " ";
+				//	std::cout << std::endl;
+				
+					std::vector<std::string> newFile;
+					dirent *direntp2;
+					//mode_t newStuff = permissionLines.st_mode;
+					if(permissionLines.st_mode & S_IFDIR && fileN[r] != "." && fileN[r] != "..")
+					{
+						DIR *newDir = opendir(newPath.c_str());
+						if(newDir == NULL)
+							perror("fault opendir");
+						//std::cout << fileN[r] << " ";
+						while((direntp2 = readdir(newDir)))
+						{
+							if(direntp2 < 0)
+							{
+								perror("direntp2 failed");
+								exit(1);
+							}
+							
+							char secondDirChar = direntp2->d_name[0];
+							//if(newDir != NULL)
+							//{
+								if(Flags[1])
+									newFile.push_back(direntp2->d_name);
+								else
+								{
+									if(secondDirChar != '.')
+									{
+										newFile.push_back(direntp2->d_name);
+									//std::cout << newFile[0];
+									}
+								}
+							//}
+						}
+						if(closedir(newDir) == -1)
+							perror("closedir failed 2");
+					//	for(size_t ii = 0; ii < newFile.size();ii++)
+					//		std::cout << newFile[ii] << " ";
+					//	std::cout << std::endl;
+					//	std::sort(newFile.begin(),newFile.end(),howToSort);
+						outputFormat(newFile,Flags,newPath);
+						newFile.clear();
+					}
+				//	else
+				//	{
+				//		closedir(newDir);
+				//	}
+					//(!Aonly)
+					//	Aonly = true;
+				}
 			}
-	
-			}
-	//	}
-		if(Aonly)
-			std::cout << std::endl;
-	}
+		}
+			if(Aonly)
+				std::cout << std::endl;
+//	}
+//	}
 }
 
 bool howToSort(std::string first,std::string second)
