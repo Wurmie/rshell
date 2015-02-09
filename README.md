@@ -1,21 +1,39 @@
 #Rshell
 ##Overview
 This is a copy of the original BASH terminal. Along with working like an original BASH, it can also run multiple commands in one line with ; and && and || connectors as well as # for comments. ; will always run the next command; || will only run if the command before that failed; && will only run if the command before it succeeded.
+
+For ls, it basically mirrors the BASH terminal ls for -R, -a, -l and its paths
+
 ##How to use
 Run the program in a linux terminal. This program will not guarantee to run properly even in a linux terminal.
 Even though echo and ls are different commands, when testing, they are the same thing.
 
-To run the program:
+To run the program for RShell:
 
-``$git clone https://github.com/Wurmie/rshell.git``
+``$git clone https://github.com/Wurmie/rshell.git
 
-``$cd rshell``
+$cd rshell
 
-``$git checkout hw0``
+$git checkout hw0
 
-``$make``
+$make
 
-``$bin/rshell``
+$bin/rshell``
+
+
+To run the program for ls:
+
+``$git clone https://github.com/wurmie/rshell.git
+
+$cd rshell
+
+$git checkout hw1
+
+$make
+
+$bin/ls``
+
+For ls, you need to add ls after bin/ls. ex: bin/ls ls (flags here)
 ##Prerequisites
 Need to run the program:
 
@@ -32,4 +50,4 @@ Need to run the program:
 ##Things not to do
 Does not do
 
-	* anything but ls,echo will give an error
+	* no idea yet...
