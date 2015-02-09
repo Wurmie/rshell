@@ -56,7 +56,7 @@ bool whichFlags(char* command,std::vector<bool> &flaggs)
 
 std::string getPermission(struct stat& stuff)
 {
-	std::string permission = "----------";
+	std::string permission = "          ";
 	mode_t stuff1 = stuff.st_mode;
 	if (S_ISDIR(stuff1))
 		 permission[0] = 'd';
@@ -70,25 +70,45 @@ std::string getPermission(struct stat& stuff)
 		permission[0] = 'p';
 	else if (S_ISSOCK(stuff1)) 
 		permission[0] = 's';
+	else
+		permission[0] = '-';
 
 	if (stuff1 & S_IRUSR) 
 		permission[1] = 'r';
+	else
+		permission[1] = '-';
 	if (stuff1 & S_IWUSR) 
 		permission[2] = 'w';
+	else
+                permission[2] = '-';
 	if (stuff1 & S_IXUSR) 
 		permission[3] = 'x';
+	else
+                permission[3] = '-';
 	if (stuff1 & S_IRGRP) 
 		permission[4] = 'r';
+	else
+                permission[4] = '-';
 	if (stuff1 & S_IWGRP) 
 		permission[5] = 'w';
+	else
+                permission[5] = '-';
 	if (stuff1 & S_IXGRP) 
 		permission[6] = 'x';
+	else
+                permission[6] = '-';
 	if (stuff1 & S_IROTH) 
 		permission[7] = 'r';
+	else
+                permission[7] = '-';
 	if (stuff1 & S_IWOTH) 
 		permission[8] = 'w';
+	else
+                permission[8] = '-';
 	if (stuff1 & S_IXOTH) 
 		permission[9] = 'x';
+	else
+                permission[9] = '-';
 	
 	return permission;
 	
@@ -101,6 +121,25 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 	std::string theTime;
 	bool Aonly = false;
 	std::string newPath;
+	size_t TotBlocks = 0;	
+
+	for(size_t y = 0; y < fileN.size();y++)
+	{
+		newPath = currentPath + "/" + fileN[y];
+		if(stat(newPath.c_str(),&permissionLines) == -1)
+		{
+			perror("error in blocks");
+			exit(1);
+		}
+		TotBlocks = TotBlocks + permissionLines.st_blocks;
+	}
+	
+	if(Flags[0])
+	{
+		TotBlocks = TotBlocks / 2;
+		std::cout << "total: " << TotBlocks << std::endl;
+	}
+
 	for(size_t r = 0;r < fileN.size();r++)
 	{
 		if(!Flags[0] && !Flags[2])
@@ -123,9 +162,9 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 						exit(1);
 					}
 					//get permission
-					std::cout << getPermission(permissionLines)<< std::left << std::setw(7) << " ";
+					std::cout << getPermission(permissionLines)<< std::left << std::setw(2) << " ";
 					//# hard links
-					std::cout << permissionLines.st_nlink << std::left << std::setw(7) << " ";
+					std::cout << permissionLines.st_nlink << std::left << std::setw(2) << " ";
 					
 					struct passwd *user = getpwuid(permissionLines.st_uid);
 					if(user == NULL)
@@ -134,7 +173,7 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 						exit(1);
 					}
 					else
-						std::cout << user->pw_name << std::left << std::setw(7) << " ";
+						std::cout << user->pw_name << std::left << std::setw(2) << " ";
 					struct group *groupid = getgrgid(permissionLines.st_gid);
 					if(groupid == NULL)
 					{
@@ -142,15 +181,15 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 						exit(1);
 					}
 					else
-						std::cout << groupid->gr_name << std::left << std::setw(7) << " ";
+						std::cout << groupid->gr_name << std::left << std::setw(4) << " ";
 					//need error check 
-					std::cout << permissionLines.st_size << std::left << std::setw(7) << " ";
+					std::cout << permissionLines.st_size << std::left << std::setw(4) << " ";
 					
 					theTime = ctime(&permissionLines.st_mtime);
 					theTime = theTime.substr(4,theTime.length()-9);
 					
-					std::cout << theTime << std::left << std::setw(7) << " ";
-					std::cout << fileN[r];
+					std::cout << theTime << std::left << std::setw(2) << "  ";
+					std::cout << fileN[r] << std::left << std::setw(2);
 					std::cout << std::endl;
 		
 			}
@@ -164,6 +203,17 @@ void outputFormat(std::vector<std::string> fileN,std::vector<bool> Flags,std::st
 
 bool howToSort(std::string first,std::string second)
 {
+	if(first[0] == '.')
+		first = first.substr(1);
+	if(second[0] == '.')
+		second = second.substr(1);
+
+	for(size_t m = 0; m < first.size(); m++)
+		first[m] = tolower(first[m]);	
+	for(size_t n = 0; n < second.size(); n++)
+		second[n] = tolower(second[n]);
+	return first < second;
+	/*
 	if(first[0] == '.' && second[0] != '.')	//first has dot, second does not
 		return (tolower(first[1]) < tolower(second[0]));
 	else if(first[0] == '.' && second[0] == '.') //first has dot and second has dot
@@ -171,7 +221,7 @@ bool howToSort(std::string first,std::string second)
 	else if(first[0] !='.' && second[0] == '.') //first does not and second does
 		return (tolower(first[0]) < tolower(second[1]));
 	else 						//first does not and second does not
-		return (tolower(first[0]) < tolower(second[0]));
+		return (tolower(first[0]) < tolower(second[0]));*/
 }
 
 //get an array of char pointers(arrays)
@@ -267,11 +317,13 @@ int main(int argc,char** argv)
 			}
 //			closedir(dirp);
 			if(closedir(dirp) == -1)
+			{
 				perror("closedir failed");
+			}
 
 			std::sort(filenames.begin(),filenames.end(),howToSort);	
-	//		for(size_t u = 0;u < filenames.size();u++)
-	//			std::cout << filenames[u] << " ";
+//			for(size_t u = 0;u < filenames.size();u++)
+//				std::cout << filenames[u] << " ";
 			outputFormat(filenames,theFlags,paths[x]);
 			filenames.clear();
 		}
