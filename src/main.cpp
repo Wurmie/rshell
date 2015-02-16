@@ -113,28 +113,120 @@ void addSpaces(std::string &inputs)
 
 	//find ||
 	temp = 0;
+	bool ConnectorFound = false;
 	while(temp < inputs.size() && temp >= 0)
         {
+		if(temp == 0)
+			temp = inputs.find("|"); //will return -1 if no found
+		else if(temp > 0 && ConnectorFound)
+			temp = inputs.find("|",temp+2);
+		else if(temp > 0 && !ConnectorFound)               //was found last time
+			temp = inputs.find("|",temp+1);
+		else
+			break;
+
+		if(inputs[temp+1] == '|')	//finds ||
+		{
+			if(temp != std::string::npos && temp > 0)  //| is found and not first word
+			{
+				inputs.replace(temp,2," || ");
+				temp = temp + 2;
+				ConnectorFound = true;
+			}
+			else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+			{
+				inputs.replace(temp,2,"|| ");
+				temp = temp + 2;
+				ConnectorFound = true;
+			}
+			else
+				break;
+		}
+		else //finds |
+		{
+			if(temp != std::string::npos && temp > 0)  //; is found and not first word
+                        {
+                                inputs.replace(temp,1," | ");
+                                temp = temp + 1;
+                        }
+                        else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+                        {
+                                inputs.replace(temp,1,"| ");
+                                temp = temp + 1;
+                        }
+                        else
+                                break;
+
+		}
+        }
+	
+	 while(temp < inputs.size() && temp >= 0)
+        {
                 if(temp == 0)
-                        temp = inputs.find("||"); //will return -1 if no found
-                else if(temp > 0)               //was found last time
-                        temp = inputs.find("||",temp+2);
+                        temp = inputs.find(">"); //will return -1 if not found
+                else if(temp > 0)
+                        temp = inputs.find(">",temp+1);
                 else
                         break;
 
-                if(temp != std::string::npos && temp > 0)  //; is found and not first word
+                if(temp != std::string::npos && temp > 0) //| is found
                 {
-                        inputs.replace(temp,2," || ");
-                        temp = temp + 2;
+                        inputs.replace(temp,1," > ");
+                        temp = temp + 1;
                 }
-                else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+                else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size())
                 {
-                        inputs.replace(temp,2,"; ");
-                        temp = temp + 2;
-                }
+                        inputs.replace(temp,1,"> ");
+                        temp = temp + 1;
+                }       
                 else
                         break;
         }
+	 while(temp < inputs.size() && temp >= 0)
+		{
+			if(temp == 0)
+				temp = inputs.find("<"); //will return -1 if not found
+			else if(temp > 0)
+				temp = inputs.find("<",temp+1);
+			else
+				break;
+
+			if(temp != std::string::npos && temp > 0) //| is found
+			{
+				inputs.replace(temp,1," < ");
+				temp = temp + 1;
+			}
+			else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size())
+			{
+				inputs.replace(temp,1,"< ");
+				temp = temp + 1;
+			}       
+			else
+				break;
+		}
+	 while(temp < inputs.size() && temp >= 0)
+		{
+			if(temp == 0)
+				temp = inputs.find(">>"); //will return -1 if not found
+			else if(temp > 0)
+				temp = inputs.find(">>",temp+2);
+			else
+				break;
+
+			if(temp != std::string::npos && temp > 0) //| is found
+			{
+				inputs.replace(temp,2," >> ");
+				temp = temp + 2;
+			}
+			else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size())
+			{
+				inputs.replace(temp,2,">> ");
+				temp = temp + 2;
+			}       
+			else
+				break;
+		}
+
 }
 int main()
 {
@@ -152,13 +244,19 @@ int main()
 
 		if(input.size() != 0)
 		{
-		char *tok = strtok(const_cast<char*>(input.c_str())," "); //will break the words if not a space
-		std::vector<char*> commands;				     //vector to store the commands
-		while(tok != NULL)					     //loop till end
+			char *tok = strtok(const_cast<char*>(input.c_str())," "); //will break the words if not a space
+			std::vector<char*> commands;				     //vector to store the commands
+			while(tok != NULL)					     //loop till end
+			{
+				commands.push_back(tok);
+				tok = strtok(NULL," ");
+			}
+
+		for(size_t lol = 0;lol < commands.size();lol++)
 		{
-			commands.push_back(tok);
-			tok = strtok(NULL," ");
+			std::cout << commands[lol] << std::endl;
 		}
+
 		//commands has all the words in vector of char*	
 		bool prevCommand;
 		bool firstCommand = true;
