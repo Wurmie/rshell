@@ -48,11 +48,7 @@ Need to run the program:
 ##Bugs/Limitations/Issues
 rshell.cpp
 
-	* # do not work when appended to other characters
-	
-	* tab does not work sometimes
-	
-	* if connectors are by itself, will not work
+	* tab does not work
 
 ls.cpp
 
