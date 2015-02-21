@@ -235,6 +235,7 @@ int main()
 	char username[100];		//get username from terminal
 	gethostname(hostname,100);
 	getlogin_r(username,100);
+	
 	while(1)			//run until exit(1)
 	{
 		std::cout << username << "@" << hostname << "$"; //output beg
@@ -252,10 +253,10 @@ int main()
 				tok = strtok(NULL," ");
 			}
 
-		for(size_t lol = 0;lol < commands.size();lol++)
+/*		for(size_t lol = 0;lol < commands.size();lol++)
 		{
 			std::cout << commands[lol] << std::endl;
-		}
+		}*/
 
 		//commands has all the words in vector of char*	
 		bool prevCommand;
@@ -334,9 +335,30 @@ int main()
 						chainCom.clear();
 					}
 				}
+
+				else if(convtStr.compare("|") == 0 && chainCom.size() != 0 && firstCommand) //found connector |
+				{
+					//this shit is piping
+					std::cout << "Hi";	
+				}
+
+				else if(convtStr.compare(">") == 0 && chainCom.size() != 0 && firstCommand) //found connector >
+				{
+					
+				}
+
+				else if(convtStr.compare(">>") == 0 && chainCom.size() != 0 && firstCommand) //found connector >>
+				{
+					
+				}
+
+				else if(convtStr.compare("<") == 0 && chainCom.size() != 0 && firstCommand) //found connector <
+				{
+					
+				}
+
 				else							//no connectors after
 				{
-					//if(convtStr.compare(";") == 0 || convtStr.compare("||") == 0 || convtStr.compare("&&") == 0)
 					if(convtStr.compare(";") == 0 && commands.size() != i+1)        //if not first command and found ; and not last position
                                         {
                                                 if(firstCommand)
@@ -392,6 +414,40 @@ int main()
                                                                 perror("first command was true so cannot execute ");
                                                 }
                                         }
+
+					else if(convtStr.compare("|") == 0 && commands.size() != i+1)
+					{
+						if(firstCommand)
+						{
+							perror("error LOL");
+							break;
+						}	
+						else
+						{
+							i++;
+							if(!prevCommand)
+							{
+								
+							}
+							else
+								perror("LOL error again");
+						}		
+					}
+
+					else if(convtStr.compare(">") == 0 && commands.size() != i+1)
+					{
+					
+					}
+
+					else if(convtStr.compare(">>") == 0 && commands.size() != i+1)
+					{
+						
+					}
+
+					else if(convtStr.compare("<") == 0 && commands.size() != i+1)
+					{
+						
+					}
 
 					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
 					{
