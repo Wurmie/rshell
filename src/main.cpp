@@ -125,6 +125,7 @@ bool syscalls(std::vector<char*> command)
 	{
 		argv[a] = command[a];
 	}
+	argv[argc-1] = '\0';
 	//now argv has everything in command	
 	int pid = fork();
 	if(pid < 0){
@@ -340,6 +341,19 @@ bool check(std::string checkValue)
 	else
 		return false;
 }
+
+int isRedir(std::string checkStr)
+{
+	if(checkStr.compare(">") == 0)
+		return 0;
+	else if(checkStr.compare(">>") == 0)
+		return 1;
+	else if(checkStr.compare("<") == 0)
+		return 2;
+	else
+		return -1;
+}
+
 int main()
 {
 	std::string input;		//string value to get input
@@ -374,6 +388,7 @@ int main()
 		bool prevCommand;
 		bool firstCommand = true;
 		bool keepGoing = true;
+		int whichDir = -1;
 		std::vector<char*> chainCom;
 		std::string convtStr;	
 		for(size_t i = 0; i < commands.size();i++)			//loop through entire vector
@@ -408,10 +423,8 @@ int main()
                                                                 else
                                                                         keepGoing = false;
                                                         }
-
-							prevCommand = syscalls(chainCom);
+								prevCommand = syscalls(chainCom);
 						}
-						keepGoing = true;
 						firstCommand = false;
 						chainCom.clear();
 					}						
@@ -505,6 +518,17 @@ int main()
                                         firstCommand = false;
                                         chainCom.clear();
                                 }
+				
+				else if(convtStr.compare("<") == 0 && chainCom.size() != 0 && firstCommand)
+                                {
+                                        chainCom.push_back(commands[i]);
+                                        i++;
+                                        convtStr = commands.at(i);
+                                        chainCom.push_back(commands[i]);
+                                        prevCommand = singleRedirection(chainCom,2);
+                                        firstCommand = false;
+                                        chainCom.clear();
+                                }
 
 				else							//no connectors after
 				{
@@ -526,13 +550,18 @@ int main()
                                                                 {
                                                                         i++;
                                                                         convtStr = commands.at(i);
+									if(whichDir < 0)
+										whichDir = isRedir(convtStr);
                                                                 }
                                                                 else
                                                                         keepGoing = false;
                                                         }
-
-                                                        prevCommand = syscalls(chainCom);
+							if(whichDir > -1)
+								prevCommand = singleRedirection(chainCom,whichDir);
+							else	
+                                                        	prevCommand = syscalls(chainCom);
                                                         keepGoing = true;
+							whichDir = -1;
 							chainCom.clear();
                                                 }
                                         }
@@ -556,16 +585,35 @@ int main()
                                                                 	{
                                                                 	        i++;
                                                                 	        convtStr = commands.at(i);
+										if(whichDir < 0)
+											whichDir = isRedir(convtStr);
                                                                 	}
                                                                 	else
                                                                 	        keepGoing = false;
                                                        	 	}	
-
+								if(whichDir > -1)
+									prevCommand = singleRedirection(chainCom,whichDir);
+								else
+									prevCommand = syscalls(chainCom);
 								keepGoing = true;
+								whichDir = -1;
                                                                 chainCom.clear();
                                                         }
-                                                        else
-                                                                perror("first command was false so cannot execute ");
+							else
+                                                        {
+                                                                while(check(convtStr) && keepGoing)
+                                                                {
+                                                                        if((i+1) < commands.size())
+                                                                        {
+                                                                                i++;
+                                                                                convtStr = commands.at(i);
+                                                                        }
+                                                                        else
+                                                                                keepGoing = false;
+                                                                }
+                                                                prevCommand = false;
+                                                        }
+
                                                 }
                                         }
 					else if(convtStr.compare("||") == 0 && commands.size() != i+1)
@@ -588,16 +636,36 @@ int main()
                                                                 	{
                                                                 	        i++;
                                                                 	        convtStr = commands.at(i);
+										if(whichDir < 0)
+											whichDir = isRedir(convtStr);
                                                                 	}
                                                                 	else
                                                                  	       keepGoing = false;
                                                         	}
-
+								for(size_t r = 0;r < chainCom.size();r++)
+									std::cout << chainCom[r];
+								if(whichDir > -1)
+									prevCommand = singleRedirection(chainCom,whichDir);
+								else
+									prevCommand = syscalls(chainCom);
                                                                 keepGoing = true;
+								whichDir = -1;
 								chainCom.clear();
                                                         }
-                                                        else
-                                                                perror("first command was true so cannot execute ");
+							else
+							{
+								while(check(convtStr) && keepGoing)
+								{
+									if((i+1) < commands.size())
+									{
+										i++;
+										convtStr = commands.at(i);
+									}
+									else
+										keepGoing = false;
+								}
+								prevCommand = false;
+							}
                                                 }
                                         }
 					
