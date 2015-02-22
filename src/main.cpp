@@ -22,7 +22,7 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
         while(newplace < command1.size() && !find)
         {
                 std::string newString= command1[newplace];
-                if(newString.compare(">") != 0 && newString.compare(">>") != 0)
+                if(newString.compare(">") != 0 && newString.compare(">>") != 0 && newString.compare("<") != 0)
                         newplace++;
                 else
                         find = true;
@@ -56,29 +56,47 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
         else if(pid == 0){              //child process running
                 //redirection in child LOL fuck me
 		int place;
-		int newOut = dup(1);
-		std::cout << command1[newFileplace];
-		if(newOut == -1)
-			perror("DUPPPPPPPP");
-		if(access(command1[newFileplace],F_OK) != -1)
+		int dupTwo;
+		int newIn;
+		int newOut;
+		//Output redirection
+		if(whichDir != 2)
 		{
-			if(whichDir == 0)
-				place = open(command1[newFileplace],O_WRONLY | O_TRUNC, 00744);
+			newOut = dup(1);
+			if(newOut == -1)
+				perror("DUPPPPPPPP");
+			if(access(command1[newFileplace],F_OK) != -1)
+			{
+				if(whichDir == 0)
+					place = open(command1[newFileplace],O_WRONLY | O_TRUNC, 00744);
+				else
+					place = open(command1[newFileplace],O_WRONLY | O_APPEND, 00744);
+			}
 			else
-				place = open(command1[newFileplace],O_WRONLY | O_APPEND, 00744);
+				place = open(command1[newFileplace],O_WRONLY | O_CREAT, 00744);
+			dupTwo = dup2(place,1);
 		}
-		else
-			place = open(command1[newFileplace],O_WRONLY | O_CREAT, 00744);
-		int dupTwo = dup2(place,1);
+		//input redirection
+		else 
+		{
+			newIn = dup(0);
+			if(newIn == -1)
+				perror("DUP IN");
+			place = open(command1[newFileplace], O_WRONLY | O_RDONLY);
+			dupTwo = dup2(place,1);
+			
+		}
 		if(dupTwo == -1)
 			perror("DUP2222 ERRORR");
 		
                 if(execvp(argv[0],argv) == -1)
                 {
-                        perror("There was an error in execvp. ");
+                        perror("There was an error in execvp1. ");
                 }
-		
-		dup2(newOut,1);
+		if(whichDir != 2)	
+			dup2(newOut,1);
+		else
+			dup2(newIn,0);
 		if(close(place) == -1)
 			perror("error closing");
                 exit(1);                //kill child
@@ -97,12 +115,6 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
         else
                 return false;	
 }
-/*
-bool doubleRedirection()
-{
-	
-}
-*/
 
 bool syscalls(std::vector<char*> command)
 {
@@ -113,8 +125,6 @@ bool syscalls(std::vector<char*> command)
 	{
 		argv[a] = command[a];
 	}
-	argv[argc-1] = '\0';
-	
 	//now argv has everything in command	
 	int pid = fork();
 	if(pid < 0){
@@ -322,6 +332,14 @@ void addSpaces(std::string &inputs)
 	}
 
 }
+
+bool check(std::string checkValue)
+{
+	if(checkValue.compare("&&") != 0 && checkValue.compare("||") != 0 && checkValue.compare(";") != 0)
+		return true;
+	else
+		return false;
+}
 int main()
 {
 	std::string input;		//string value to get input
@@ -355,6 +373,7 @@ int main()
 		//commands has all the words in vector of char*	
 		bool prevCommand;
 		bool firstCommand = true;
+		bool keepGoing = true;
 		std::vector<char*> chainCom;
 		std::string convtStr;	
 		for(size_t i = 0; i < commands.size();i++)			//loop through entire vector
@@ -378,9 +397,21 @@ int main()
 							 exit(1);	//if next one is exit
 						else
 						{
-							chainCom.push_back(commands[i]);
+							while(check(convtStr) && keepGoing)
+                                                        {
+                                                                chainCom.push_back(commands[i]);
+                                                                if((i+1) < commands.size())
+                                                                {
+                                                                        i++;
+                                                                        convtStr = commands.at(i);
+                                                                }
+                                                                else
+                                                                        keepGoing = false;
+                                                        }
+
 							prevCommand = syscalls(chainCom);
 						}
+						keepGoing = true;
 						firstCommand = false;
 						chainCom.clear();
 					}						
@@ -398,17 +429,29 @@ int main()
 							exit(1);
 						else if(prevCommand)
 						{
-							chainCom.push_back(commands[i]);
+							while(check(convtStr) && keepGoing)
+							{
+								chainCom.push_back(commands[i]);
+								if((i+1) < commands.size())
+								{
+									i++;
+									convtStr = commands.at(i);
+								}
+								else
+									keepGoing = false;
+							}
 							prevCommand = syscalls(chainCom);
 						}		
 						else
 							perror("first command was false so cannot execute ");
 						firstCommand = false;
+						keepGoing = true;
 						chainCom.clear();
 					}
 				}
 				else if(convtStr.compare("||") == 0 && chainCom.size() != 0 && firstCommand)	//found connector ||
 				{
+					std::cout << "here";
 					prevCommand = syscalls(chainCom);
 					chainCom.clear();
 
@@ -420,12 +463,23 @@ int main()
 							exit(1);
 						else if(!prevCommand)
 						{
-							chainCom.push_back(commands[i]);
+							while(check(convtStr) && keepGoing)
+							{
+								chainCom.push_back(commands[i]);
+								if((i+1) < commands.size())
+								{
+									i++;
+									convtStr = commands.at(i);
+								}
+								else
+									keepGoing = false;
+							}
 							prevCommand = syscalls(chainCom);
 						}
 						else
 							perror("first command was true so cannot execute ");
 						firstCommand = false;
+						keepGoing = true;
 						chainCom.clear();
 					}
 				}
@@ -464,9 +518,22 @@ int main()
                                                 else
                                                 {
                                                         i++;
-                                                        chainCom.push_back(commands[i]);
+							convtStr = commands[i];
+							while(check(convtStr) && keepGoing)
+                                                        {
+                                                                chainCom.push_back(commands[i]);
+                                                                if((i+1) < commands.size())
+                                                                {
+                                                                        i++;
+                                                                        convtStr = commands.at(i);
+                                                                }
+                                                                else
+                                                                        keepGoing = false;
+                                                        }
+
                                                         prevCommand = syscalls(chainCom);
-                                                        chainCom.clear();
+                                                        keepGoing = true;
+							chainCom.clear();
                                                 }
                                         }
                                         else if(convtStr.compare("&&") == 0 && commands.size() != i+1)
@@ -479,10 +546,22 @@ int main()
                                                 else
                                                 {
                                                         i++;
+							convtStr = commands[i];
                                                         if(prevCommand)
                                                         {
-                                                                chainCom.push_back(commands[i]);
-                                                                prevCommand = syscalls(chainCom);
+								while(check(convtStr) && keepGoing)
+                                                        	{
+                                                                	chainCom.push_back(commands[i]);
+                                                                	if((i+1) < commands.size())
+                                                                	{
+                                                                	        i++;
+                                                                	        convtStr = commands.at(i);
+                                                                	}
+                                                                	else
+                                                                	        keepGoing = false;
+                                                       	 	}	
+
+								keepGoing = true;
                                                                 chainCom.clear();
                                                         }
                                                         else
@@ -499,11 +578,23 @@ int main()
                                                 else
                                                 {
                                                         i++;
+							convtStr = commands[i];
                                                         if(!prevCommand)
                                                         {
-                                                                chainCom.push_back(commands[i]);
-                                                                prevCommand = syscalls(chainCom);
-                                                                chainCom.clear();
+								while(check(convtStr) && keepGoing)
+                                                        	{
+                                                                	chainCom.push_back(commands[i]);
+                                                                	if((i+1) < commands.size())
+                                                                	{
+                                                                	        i++;
+                                                                	        convtStr = commands.at(i);
+                                                                	}
+                                                                	else
+                                                                 	       keepGoing = false;
+                                                        	}
+
+                                                                keepGoing = true;
+								chainCom.clear();
                                                         }
                                                         else
                                                                 perror("first command was true so cannot execute ");
