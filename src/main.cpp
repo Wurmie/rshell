@@ -11,6 +11,52 @@
 #include <stdlib.h>
 
 
+bool singleRedirection(std::vector<char*> command1)
+{
+	int status;
+        int argc = command1.size()+1;                            //size of argv
+        char **argv = new char*[argc];                  //make argv pointer pointer for execvp.
+        for(int a = 0;a < argc-1;a++)                   //shove everything in command into argv
+        {
+                argv[a] = command1[a];
+        }
+        argv[argc-1] = '\0';
+
+        //now argv has everything in command    
+        int pid = fork();
+        if(pid < 0){
+                perror("error with fork(child) ");
+                exit(1);
+        }
+        else if(pid == 0){              //child process running
+                //redirection in child LOL fuck me
+
+                if(execvp(argv[0],argv) == -1)
+                {
+                        perror("There was an error in execvp. ");
+                }
+                exit(1);                //kill child
+        }
+        else{                           //in parent
+                if(waitpid(pid,&status,0) == -1){
+                        perror("error with wait ");
+                        exit(1);
+                }
+        }
+        //parent function here
+        delete []argv;
+        if(status == 0)
+                return true;
+        else
+                return false;	
+}
+/*
+bool doubleRedirection()
+{
+	
+}
+*/
+
 bool syscalls(std::vector<char*> command)
 {
 	int status;
@@ -20,7 +66,8 @@ bool syscalls(std::vector<char*> command)
 	{
 		argv[a] = command[a];
 	}
-	argv[argc-1] = '\0';	
+	argv[argc-1] = '\0';
+	
 	//now argv has everything in command	
 	int pid = fork();
 	if(pid < 0){
@@ -28,7 +75,6 @@ bool syscalls(std::vector<char*> command)
 		exit(1);
 	}
 	else if(pid == 0){		//child process running
-		std::cout << "Inside child process ";
 		if(execvp(argv[0],argv) == -1)
 		{	
 			perror("There was an error in execvp. ");
@@ -47,6 +93,7 @@ bool syscalls(std::vector<char*> command)
 		return true;
 	else
 		return false;
+
 }
 
 //adds spaces before and  after every connector and takes out comments as well
@@ -159,29 +206,53 @@ void addSpaces(std::string &inputs)
 
 		}
         }
-	
-	 while(temp < inputs.size() && temp >= 0)
+	ConnectorFound = false;
+	while(temp < inputs.size() && temp >= 0)
         {
                 if(temp == 0)
-                        temp = inputs.find(">"); //will return -1 if not found
-                else if(temp > 0)
+                        temp = inputs.find(">"); //will return -1 if no found
+                else if(temp > 0 && ConnectorFound)
+                        temp = inputs.find(">",temp+2);
+                else if(temp > 0 && !ConnectorFound)               //was found last time
                         temp = inputs.find(">",temp+1);
                 else
                         break;
 
-                if(temp != std::string::npos && temp > 0) //| is found
+                if(inputs[temp+1] == '>')       //finds ||
                 {
-                        inputs.replace(temp,1," > ");
-                        temp = temp + 1;
+                        if(temp != std::string::npos && temp > 0)  //| is found and not first word
+                        {
+                                inputs.replace(temp,2," >> ");
+                                temp = temp + 2;
+                                ConnectorFound = true;
+                        }
+                        else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+                        {
+                                inputs.replace(temp,2,">> ");
+                                temp = temp + 2;
+                                ConnectorFound = true;
+                        }
+                        else
+                                break;
                 }
-                else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size())
+                else //finds |
                 {
-                        inputs.replace(temp,1,"> ");
-                        temp = temp + 1;
-                }       
-                else
-                        break;
+                        if(temp != std::string::npos && temp > 0)  //; is found and not first word
+                        {
+                                inputs.replace(temp,1," > ");
+                                temp = temp + 1;
+                        }
+                        else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size()) //; is found and is first word and not the only word
+                        {
+                                inputs.replace(temp,1,"> ");
+                                temp = temp + 1;
+                        }
+                        else
+                                break;
+
+                }
         }
+	
 	 while(temp < inputs.size() && temp >= 0)
 		{
 			if(temp == 0)
@@ -200,28 +271,6 @@ void addSpaces(std::string &inputs)
 			{
 				inputs.replace(temp,1,"< ");
 				temp = temp + 1;
-			}       
-			else
-				break;
-		}
-	 while(temp < inputs.size() && temp >= 0)
-		{
-			if(temp == 0)
-				temp = inputs.find(">>"); //will return -1 if not found
-			else if(temp > 0)
-				temp = inputs.find(">>",temp+2);
-			else
-				break;
-
-			if(temp != std::string::npos && temp > 0) //| is found
-			{
-				inputs.replace(temp,2," >> ");
-				temp = temp + 2;
-			}
-			else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size())
-			{
-				inputs.replace(temp,2,">> ");
-				temp = temp + 2;
 			}       
 			else
 				break;
@@ -252,12 +301,12 @@ int main()
 				commands.push_back(tok);
 				tok = strtok(NULL," ");
 			}
-
-/*		for(size_t lol = 0;lol < commands.size();lol++)
+/*
+		for(size_t lol = 0;lol < commands.size();lol++)
 		{
 			std::cout << commands[lol] << std::endl;
-		}*/
-
+		}
+*/
 		//commands has all the words in vector of char*	
 		bool prevCommand;
 		bool firstCommand = true;
@@ -335,26 +384,15 @@ int main()
 						chainCom.clear();
 					}
 				}
-
-				else if(convtStr.compare("|") == 0 && chainCom.size() != 0 && firstCommand) //found connector |
+				
+				else if(convtStr.compare(">") == 0 && chainCom.size() != 0 && firstCommand)
 				{
-					//this shit is piping
-					std::cout << "Hi";	
-				}
-
-				else if(convtStr.compare(">") == 0 && chainCom.size() != 0 && firstCommand) //found connector >
-				{
-					
-				}
-
-				else if(convtStr.compare(">>") == 0 && chainCom.size() != 0 && firstCommand) //found connector >>
-				{
-					
-				}
-
-				else if(convtStr.compare("<") == 0 && chainCom.size() != 0 && firstCommand) //found connector <
-				{
-					
+					i++;
+					convtStr = commands.at(i);
+					chainCom.push_back(commands[i]);
+					prevCommand = singleRedirection(chainCom);
+					firstCommand = false;
+					chainCom.clear();
 				}
 
 				else							//no connectors after
@@ -414,39 +452,13 @@ int main()
                                                                 perror("first command was true so cannot execute ");
                                                 }
                                         }
-
-					else if(convtStr.compare("|") == 0 && commands.size() != i+1)
-					{
-						if(firstCommand)
-						{
-							perror("error LOL");
-							break;
-						}	
-						else
-						{
-							i++;
-							if(!prevCommand)
-							{
-								
-							}
-							else
-								perror("LOL error again");
-						}		
-					}
-
+					
 					else if(convtStr.compare(">") == 0 && commands.size() != i+1)
 					{
-					
-					}
-
-					else if(convtStr.compare(">>") == 0 && commands.size() != i+1)
-					{
-						
-					}
-
-					else if(convtStr.compare("<") == 0 && commands.size() != i+1)
-					{
-						
+						i++;
+						chainCom.push_back(commands[i]);
+						prevCommand = singleRedirection(chainCom);
+						chainCom.clear();
 					}
 
 					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
