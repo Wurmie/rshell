@@ -9,19 +9,44 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 
 bool singleRedirection(std::vector<char*> command1)
 {
+	size_t newplace = 0;
+        size_t find = false;
+
+        while(newplace < command1.size() && !find)
+        {
+                std::string newString= command1[newplace];
+                if(newString.compare(">") != 0)
+                        newplace++;
+                else
+                        find = true;
+        }
+	
+//	for(size_t i = 0; i < newplace;i++)
+//		std::cout << command1[i];
+
+	int newFileplace = newplace;
+	newFileplace++;
+//	std::string  theFile = command1[newFileplace];
+//	std::cout << command1[newFileplace--] << " ";
+
 	int status;
-        int argc = command1.size()+1;                            //size of argv
+        int argc = newplace--;                            //size of argv
         char **argv = new char*[argc];                  //make argv pointer pointer for execvp.
-        for(int a = 0;a < argc-1;a++)                   //shove everything in command into argv
+        for(int a = 0;a < argc;a++)                   //shove everything in command into argv
         {
                 argv[a] = command1[a];
         }
-        argv[argc-1] = '\0';
-
+        argv[argc] = '\0';
+//	std:: cout << argv[newFileplace];	
+//	for(size_t i = 0; argv[i] != '\0';i++)
+//		std::cout << argv[i] << " ";	
         //now argv has everything in command    
         int pid = fork();
         if(pid < 0){
@@ -30,11 +55,28 @@ bool singleRedirection(std::vector<char*> command1)
         }
         else if(pid == 0){              //child process running
                 //redirection in child LOL fuck me
-
+		int place;
+		int newOut = dup(1);
+		std::cout << command1[newFileplace];
+		if(newOut == -1)
+			perror("DUPPPPPPPP");
+		if(access(command1[newFileplace],F_OK) != -1)
+			place = open(command1[newFileplace],O_WRONLY | O_TRUNC, 00744);
+		else
+			place = open(command1[newFileplace],O_WRONLY | O_CREAT, 00744);
+		
+		int dupTwo = dup2(place,1);
+		if(dupTwo == -1)
+			perror("DUP2222 ERRORR");
+		
                 if(execvp(argv[0],argv) == -1)
                 {
                         perror("There was an error in execvp. ");
                 }
+		
+		dup2(newOut,1);
+		if(close(place) == -1)
+			perror("error closing");
                 exit(1);                //kill child
         }
         else{                           //in parent
@@ -43,6 +85,7 @@ bool singleRedirection(std::vector<char*> command1)
                         exit(1);
                 }
         }
+
         //parent function here
         delete []argv;
         if(status == 0)
@@ -103,9 +146,7 @@ void addSpaces(std::string &inputs)
 	size_t temp = inputs.find("#");
 	
 	if(temp > 0)		//first word is not #
-	{
 		inputs = inputs.substr(0,temp);
-	}
 	else if(temp == 0)	//first word is #
 		inputs = " ";
 	
@@ -253,28 +294,28 @@ void addSpaces(std::string &inputs)
                 }
         }
 	
-	 while(temp < inputs.size() && temp >= 0)
-		{
-			if(temp == 0)
-				temp = inputs.find("<"); //will return -1 if not found
-			else if(temp > 0)
-				temp = inputs.find("<",temp+1);
-			else
-				break;
+	while(temp < inputs.size() && temp >= 0)
+	{
+		if(temp == 0)
+			temp = inputs.find("<"); //will return -1 if not found
+		else if(temp > 0)
+			temp = inputs.find("<",temp+1);
+		else
+			break;
 
-			if(temp != std::string::npos && temp > 0) //| is found
-			{
-				inputs.replace(temp,1," < ");
-				temp = temp + 1;
-			}
-			else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size())
-			{
-				inputs.replace(temp,1,"< ");
-				temp = temp + 1;
-			}       
-			else
-				break;
+		if(temp != std::string::npos && temp > 0 && inputs[temp+1] != '<') //| is found
+		{
+			inputs.replace(temp,1," < ");
+			temp = temp + 1;
 		}
+		else if(temp != std::string::npos && temp == 0 && (temp + 1) < inputs.size() && inputs[temp+1] != '<')
+		{
+			inputs.replace(temp,1,"< ");
+			temp = temp + 1;
+		}       
+		else
+			break;
+	}
 
 }
 int main()
@@ -387,6 +428,7 @@ int main()
 				
 				else if(convtStr.compare(">") == 0 && chainCom.size() != 0 && firstCommand)
 				{
+					chainCom.push_back(commands[i]);
 					i++;
 					convtStr = commands.at(i);
 					chainCom.push_back(commands[i]);
@@ -455,6 +497,7 @@ int main()
 					
 					else if(convtStr.compare(">") == 0 && commands.size() != i+1)
 					{
+						chainCom.push_back(commands[i]);
 						i++;
 						chainCom.push_back(commands[i]);
 						prevCommand = singleRedirection(chainCom);
@@ -467,6 +510,7 @@ int main()
 						{
 							chainCom.push_back(commands[i]);
 							prevCommand = syscalls(chainCom);
+							chainCom.clear();
 							break;
 						}
 						else
@@ -480,7 +524,8 @@ int main()
 					}
 				}
 			}
-		}	
+		}
+		commands.clear();	
 		}
 	}
 	return 0;
