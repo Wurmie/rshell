@@ -14,7 +14,7 @@
 #include <sys/types.h>
 
 
-bool singleRedirection(std::vector<char*> command1)
+bool singleRedirection(std::vector<char*> command1, int whichDir)
 {
 	size_t newplace = 0;
         size_t find = false;
@@ -22,7 +22,7 @@ bool singleRedirection(std::vector<char*> command1)
         while(newplace < command1.size() && !find)
         {
                 std::string newString= command1[newplace];
-                if(newString.compare(">") != 0)
+                if(newString.compare(">") != 0 && newString.compare(">>") != 0)
                         newplace++;
                 else
                         find = true;
@@ -61,10 +61,14 @@ bool singleRedirection(std::vector<char*> command1)
 		if(newOut == -1)
 			perror("DUPPPPPPPP");
 		if(access(command1[newFileplace],F_OK) != -1)
-			place = open(command1[newFileplace],O_WRONLY | O_TRUNC, 00744);
+		{
+			if(whichDir == 0)
+				place = open(command1[newFileplace],O_WRONLY | O_TRUNC, 00744);
+			else
+				place = open(command1[newFileplace],O_WRONLY | O_APPEND, 00744);
+		}
 		else
 			place = open(command1[newFileplace],O_WRONLY | O_CREAT, 00744);
-		
 		int dupTwo = dup2(place,1);
 		if(dupTwo == -1)
 			perror("DUP2222 ERRORR");
@@ -432,10 +436,21 @@ int main()
 					i++;
 					convtStr = commands.at(i);
 					chainCom.push_back(commands[i]);
-					prevCommand = singleRedirection(chainCom);
+					prevCommand = singleRedirection(chainCom,0);
 					firstCommand = false;
 					chainCom.clear();
 				}
+
+				else if(convtStr.compare(">>") == 0 && chainCom.size() != 0 && firstCommand)
+                                {
+                                        chainCom.push_back(commands[i]);
+                                        i++;
+                                        convtStr = commands.at(i);
+                                        chainCom.push_back(commands[i]);
+                                        prevCommand = singleRedirection(chainCom,1);
+                                        firstCommand = false;
+                                        chainCom.clear();
+                                }
 
 				else							//no connectors after
 				{
@@ -500,9 +515,19 @@ int main()
 						chainCom.push_back(commands[i]);
 						i++;
 						chainCom.push_back(commands[i]);
-						prevCommand = singleRedirection(chainCom);
+						prevCommand = singleRedirection(chainCom,0);
 						chainCom.clear();
 					}
+
+					else if(convtStr.compare(">>") == 0 && commands.size() != i+1)
+                                        {
+                                                chainCom.push_back(commands[i]);
+                                                i++;
+                                                chainCom.push_back(commands[i]);
+                                                prevCommand = singleRedirection(chainCom,1);
+                                                chainCom.clear();
+                                        }
+
 
 					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
 					{
