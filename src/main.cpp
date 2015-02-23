@@ -57,7 +57,7 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
         else if(pid == 0){              //child process running
                 //redirection in child LOL fuck me
 		int place;
-		int dupTwo;
+		int dupTwo = -1;
 		int newIn;
 		int newOut;
 		//Output redirection
@@ -207,6 +207,7 @@ void addSpaces(std::string &inputs)
                 else if(temp > 0)               //was found last time
                         temp = inputs.find("&&",temp+2);
                 else
+
                         break;
 
                 if(temp != std::string::npos && temp > 0)  //; is found and not first word
@@ -529,6 +530,7 @@ int main()
 				
 				else if(convtStr.compare("<") == 0 && chainCom.size() != 0 && firstCommand)
                                 {
+					//need to find if there is an output redirection
                                         chainCom.push_back(commands[i]);
                                         i++;
                                         convtStr = commands.at(i);
