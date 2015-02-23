@@ -48,6 +48,7 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
 //	for(size_t i = 0; argv[i] != '\0';i++)
 //		std::cout << argv[i] << " ";	
         //now argv has everything in command    
+	
         int pid = fork();
         if(pid < 0){
                 perror("error with fork(child) ");
@@ -60,8 +61,9 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
 		int newIn;
 		int newOut;
 		//Output redirection
-		if(whichDir != 2)
+		if(whichDir < 2)
 		{
+			std::cout << "here";
 			newOut = dup(1);
 			if(newOut == -1)
 				perror("DUPPPPPPPP");
@@ -77,22 +79,28 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
 			dupTwo = dup2(place,1);
 		}
 		//input redirection
-		else 
+		else if(whichDir == 2)
 		{
 			newIn = dup(0);
 			if(newIn == -1)
 				perror("DUP IN");
-			place = open(command1[newFileplace], O_WRONLY | O_RDONLY);
-			dupTwo = dup2(place,1);
+			if(access(command1[newFileplace],F_OK) != -1)
+				place = open(command1[newFileplace], O_RDONLY);
+			else
+				perror("cannot access file");
+			
+			dupTwo = dup2(place,0);
 			
 		}
 		if(dupTwo == -1)
 			perror("DUP2222 ERRORR");
 		
+		//EXECVP
                 if(execvp(argv[0],argv) == -1)
                 {
                         perror("There was an error in execvp1. ");
                 }
+		//END EXECVP
 		if(whichDir != 2)	
 			dup2(newOut,1);
 		else
@@ -687,6 +695,14 @@ int main()
                                                 chainCom.clear();
                                         }
 
+					else if(convtStr.compare("<") == 0 && commands.size() != i+1)
+                                        {
+                                                chainCom.push_back(commands[i]);
+                                                i++;
+                                                chainCom.push_back(commands[i]);
+                                                prevCommand = singleRedirection(chainCom,2);
+                                                chainCom.clear();
+                                        }
 
 					else if(firstCommand && commands.size() == i+1)		//first word and nothing after
 					{
