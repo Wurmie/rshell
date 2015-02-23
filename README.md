@@ -14,7 +14,7 @@ To run the program for RShell:
 
 ``$cd rshell``
 
-``$git checkout hw0``
+``$git checkout hw2``
 
 ``$make``
 
@@ -27,13 +27,25 @@ To run the program for ls:
 
 ``$cd rshell``
 
-``$git checkout hw1``
+``$git checkout hw2``
 
 ``$make``
 
 ``$bin/ls``
 
 For ls, you need to add ls after bin/ls. ex: bin/ls ls (flags here)
+
+To run cp.cpp program:
+
+``$git clone https://github.com/wurmie/rshell.git``
+
+``$cd rshell``
+
+``$git checkout hw2``
+
+``$make``
+
+``$bin/cp``
 
 You might need to go into edit mode. I backspaced alot.
 ##Prerequisites
