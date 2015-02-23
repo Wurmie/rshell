@@ -9,9 +9,11 @@ g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
 g++ -ansi -pedantic -Wall -Werror ./src/cp.cpp -o ./bin/cp
 ~/rshell
 wlee030@hammer $ bin/rshell
+//output redirection
 wlee030@hammer.cs.ucr.edu$echo hello > testing
 wlee030@hammer.cs.ucr.edu$cat testing
 hello
+//output redirection with multiple words
 wlee030@hammer.cs.ucr.edu$echo hello hello > testing
 *** glibc detected *** bin/rshell: free(): invalid next size (fast): 0x0000000002039d40 ***
 ======= Backtrace: =========
@@ -66,30 +68,49 @@ bin/rshell[0x4013d9]
 ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
 Aborted
 ~/rshell
+//output redirection that overwrites a file
 wlee030@hammer $ echo hi > testing
 ~/rshell
 wlee030@hammer $ cat testing
 hi
 ~/rshell
+//output redirection adding onto file
 wlee030@hammer $ echo hello >> testing
 ~/rshell
 wlee030@hammer $ cat testing
 hi
 hello
 ~/rshell
+//input redirection
 wlee030@hammer $ wc < testing
 2 2 9
 ~/rshell
+//input redirection and write into and output redirection
 wlee030@hammer $ wc < testing > testing1
 ~/rshell
 wlee030@hammer $ cat testing1
 2 2 9
 ~/rshell
+//piping
 wlee030@hammer $ testing | testing1
 bash: ./testing1: Permission denied
 ./testing: line 1: hi: command not found
 ./testing: line 2: hello: command not found
 ~/rshell
+//output redirection with connectors ;
+wlee030@hammer.cs.ucr.edu$echo hi > testing ; echo hello > testing^M
+wlee030@hammer.cs.ucr.edu$cat testing^M
+hello^M
+//double output redirection with connectors &&
+wlee030@hammer.cs.ucr.edu$echo hi >> testing && echo hell >> testing^M
+wlee030@hammer.cs.ucr.edu$cat testing^M
+hello^M
+hi^M
+hell^M
+//input redirection with connectors ||
+wlee030@hammer.cs.ucr.edu$wc < testing || echo hello > testing^M
+wlee030@hammer.cs.ucr.edu$cat testing^M
+0 0 0^M
 wlee030@hammer $ exit
 exit
 

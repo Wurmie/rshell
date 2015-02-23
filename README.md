@@ -49,6 +49,10 @@ Need to run the program:
 rshell.cpp
 
 	* tab does not work
+	
+	* piping does not work
+	
+	* redirection does not work with multiple words before or after the redirection symbol
 
 ls.cpp
 
