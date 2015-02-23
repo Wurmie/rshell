@@ -13,6 +13,85 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+bool doubleRedirection(std::vector<char*> command2, char* outputFile,char* inputFile,int whichDir)
+{
+	int status;
+	int argc = command2.size()+1;
+	char **argv = new char*[argc];
+
+	for(int a = 0;a < argc-1;a++)
+		argv[a] = command2[a];
+
+	argv[argc-1] = '\0';
+	
+	
+	int pid = fork();
+	if(pid < 0){
+		perror("error with fork(third child) ");
+		exit(1);
+	}
+	else if(pid == 0){
+		int place;
+		int dupTwo = -1;
+		int newIn;
+		int newOut;
+	
+		//output redirection	
+		
+			newOut = dup(1);
+			if(newOut == -1)
+				perror("DUP AGAINN");
+			if(access(outputFile,F_OK) != -1)
+			{
+				if(whichDir == 0)
+					place = open(outputFile,O_WRONLY | O_TRUNC, 00744);
+				else
+					place = open(outputFile,O_WRONLY | O_APPEND, 00744);
+			}
+			else
+				place = open(outputFile,O_WRONLY | O_CREAT, 00744);
+			dupTwo = dup2(place,1);
+		
+		//input redirection
+		
+			newIn = dup(0);
+			if(newIn == -1)
+				perror("DUP IN AGAIN");
+			if(access(inputFile,F_OK) != -1)
+				place = open(inputFile, O_RDONLY);
+			else
+				perror("cannot access files again");
+
+			dupTwo = dup2(place,0);
+		
+		
+		if(dupTwo == -1)
+			perror("DUP2 Error");
+
+		if(execvp(argv[0],argv) == -1)
+			perror("error in execvp2");
+
+		if(whichDir != 2)
+			dup2(newOut,1);
+		else
+			dup2(newIn,0);
+		if(close(place) == -1)
+			perror("error closing again");
+		exit(1);	
+	}
+	else{
+		if(waitpid(pid,&status,0) == -1){
+			perror("error with wait again");
+			exit(1);
+		}
+	}
+	
+	delete []argv;
+	if(status == 0)
+		return true;
+	else
+		return false;
+}
 
 bool singleRedirection(std::vector<char*> command1, int whichDir)
 {
@@ -79,7 +158,7 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
 			dupTwo = dup2(place,1);
 		}
 		//input redirection
-		else if(whichDir == 2)
+		if(whichDir == 2)
 		{
 			newIn = dup(0);
 			if(newIn == -1)
@@ -530,14 +609,52 @@ int main()
 				
 				else if(convtStr.compare("<") == 0 && chainCom.size() != 0 && firstCommand)
                                 {
+					bool hasOutput = false;
+					std::string convt;
+					int whichCon = -1;
+					int temp = i;
+					char* inputFile = commands[++temp];
+					size_t j = i;
 					//need to find if there is an output redirection
-                                        chainCom.push_back(commands[i]);
-                                        i++;
-                                        convtStr = commands.at(i);
-                                        chainCom.push_back(commands[i]);
-                                        prevCommand = singleRedirection(chainCom,2);
-                                        firstCommand = false;
-                                        chainCom.clear();
+					while(j < commands.size() && !hasOutput)
+					{
+						convt = commands[j];
+						if(convt.compare(">")==0)
+						{
+							hasOutput = true;
+							whichCon = 0;
+						}
+						else if(convt.compare(">>")==0)
+						{
+							hasOutput = true;
+							whichCon = 1;
+						}
+						else
+						{
+							++j;
+							++temp;
+						}
+					}
+	
+					if(hasOutput)
+					{
+						i = temp;
+						i++;
+						j++;
+						char* outputFile = commands[j];
+						
+						prevCommand = doubleRedirection(chainCom,outputFile,inputFile,whichCon);
+					}
+					else
+					{
+						chainCom.push_back(commands[i]);
+						i++;
+						convtStr = commands.at(i);
+						chainCom.push_back(commands[i]);
+						prevCommand = singleRedirection(chainCom,2);
+						firstCommand = false;
+						chainCom.clear();
+					}
                                 }
 
 				else							//no connectors after
