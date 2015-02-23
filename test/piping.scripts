@@ -1,0 +1,96 @@
+Script started on Mon 23 Feb 2015 01:47:16 AM PST
+~
+wlee030@hammer $ cd rshell
+~/rshell
+wlee030@hammer $ make
+mkdir -p ./bin
+g++ -ansi -pedantic -Wall -Werror ./src/main.cpp -o ./bin/rshell
+g++ -ansi -pedantic -Wall -Werror ./src/ls.cpp -o ./bin/ls
+g++ -ansi -pedantic -Wall -Werror ./src/cp.cpp -o ./bin/cp
+~/rshell
+wlee030@hammer $ bin/rshell
+wlee030@hammer.cs.ucr.edu$echo hello > testing
+wlee030@hammer.cs.ucr.edu$cat testing
+hello
+wlee030@hammer.cs.ucr.edu$echo hello hello > testing
+*** glibc detected *** bin/rshell: free(): invalid next size (fast): 0x0000000002039d40 ***
+======= Backtrace: =========
+/lib64/libc.so.6[0x3b53675e66]
+/lib64/libc.so.6[0x3b536789b3]
+bin/rshell[0x401bec]
+bin/rshell[0x40315a]
+/lib64/libc.so.6(__libc_start_main+0xfd)[0x3b5361ed5d]
+bin/rshell[0x4013d9]
+======= Memory map: ========
+00400000-00407000 r-xp 00000000 00:17 8830959                            /class/classes/wlee030/rshell/bin/rshell
+00607000-00608000 rw-p 00007000 00:17 8830959                            /class/classes/wlee030/rshell/bin/rshell
+02038000-02059000 rw-p 00000000 00:00 0                                  [heap]
+3b53200000-3b53220000 r-xp 00000000 08:01 13631490                       /lib64/ld-2.12.so
+3b5341f000-3b53420000 r--p 0001f000 08:01 13631490                       /lib64/ld-2.12.so
+3b53420000-3b53421000 rw-p 00020000 08:01 13631490                       /lib64/ld-2.12.so
+3b53421000-3b53422000 rw-p 00000000 00:00 0 
+3b53600000-3b5378a000 r-xp 00000000 08:01 13631494                       /lib64/libc-2.12.so
+3b5378a000-3b5398a000 ---p 0018a000 08:01 13631494                       /lib64/libc-2.12.so
+3b5398a000-3b5398e000 r--p 0018a000 08:01 13631494                       /lib64/libc-2.12.so
+3b5398e000-3b5398f000 rw-p 0018e000 08:01 13631494                       /lib64/libc-2.12.so
+3b5398f000-3b53994000 rw-p 00000000 00:00 0 
+3b53a00000-3b53a83000 r-xp 00000000 08:01 13631516                       /lib64/libm-2.12.so
+3b53a83000-3b53c82000 ---p 00083000 08:01 13631516                       /lib64/libm-2.12.so
+3b53c82000-3b53c83000 r--p 00082000 08:01 13631516                       /lib64/libm-2.12.so
+3b53c83000-3b53c84000 rw-p 00083000 08:01 13631516                       /lib64/libm-2.12.so
+3b59200000-3b59216000 r-xp 00000000 08:01 13631588                       /lib64/libgcc_s-4.4.7-20120601.so.1
+3b59216000-3b59415000 ---p 00016000 08:01 13631588                       /lib64/libgcc_s-4.4.7-20120601.so.1
+3b59415000-3b59416000 rw-p 00015000 08:01 13631588                       /lib64/libgcc_s-4.4.7-20120601.so.1
+3b5b200000-3b5b2e8000 r-xp 00000000 08:01 9185002                        /usr/lib64/libstdc++.so.6.0.13
+3b5b2e8000-3b5b4e8000 ---p 000e8000 08:01 9185002                        /usr/lib64/libstdc++.so.6.0.13
+3b5b4e8000-3b5b4ef000 r--p 000e8000 08:01 9185002                        /usr/lib64/libstdc++.so.6.0.13
+3b5b4ef000-3b5b4f1000 rw-p 000ef000 08:01 9185002                        /usr/lib64/libstdc++.so.6.0.13
+3b5b4f1000-3b5b506000 rw-p 00000000 00:00 0 
+3b62a00000-3b62a16000 r-xp 00000000 08:01 13631636                       /lib64/libnsl-2.12.so
+3b62a16000-3b62c15000 ---p 00016000 08:01 13631636                       /lib64/libnsl-2.12.so
+3b62c15000-3b62c16000 r--p 00015000 08:01 13631636                       /lib64/libnsl-2.12.so
+3b62c16000-3b62c17000 rw-p 00016000 08:01 13631636                       /lib64/libnsl-2.12.so
+3b62c17000-3b62c19000 rw-p 00000000 00:00 0 
+7fdc27cce000-7fdc27cd8000 r-xp 00000000 08:01 13631821                   /lib64/libnss_nis-2.12.so
+7fdc27cd8000-7fdc27ed7000 ---p 0000a000 08:01 13631821                   /lib64/libnss_nis-2.12.so
+7fdc27ed7000-7fdc27ed8000 r--p 00009000 08:01 13631821                   /lib64/libnss_nis-2.12.so
+7fdc27ed8000-7fdc27ed9000 rw-p 0000a000 08:01 13631821                   /lib64/libnss_nis-2.12.so
+7fdc27ed9000-7fdc27ee5000 r-xp 00000000 08:01 13632288                   /lib64/libnss_files-2.12.so
+7fdc27ee5000-7fdc280e5000 ---p 0000c000 08:01 13632288                   /lib64/libnss_files-2.12.so
+7fdc280e5000-7fdc280e6000 r--p 0000c000 08:01 13632288                   /lib64/libnss_files-2.12.so
+7fdc280e6000-7fdc280e7000 rw-p 0000d000 08:01 13632288                   /lib64/libnss_files-2.12.so
+7fdc280e7000-7fdc280ec000 rw-p 00000000 00:00 0 
+7fdc28101000-7fdc28105000 rw-p 00000000 00:00 0 
+7fff67e08000-7fff67e1e000 rw-p 00000000 00:00 0                          [stack]
+7fff67f4d000-7fff67f4e000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+Aborted
+~/rshell
+wlee030@hammer $ echo hi > testing
+~/rshell
+wlee030@hammer $ cat testing
+hi
+~/rshell
+wlee030@hammer $ echo hello >> testing
+~/rshell
+wlee030@hammer $ cat testing
+hi
+hello
+~/rshell
+wlee030@hammer $ wc < testing
+2 2 9
+~/rshell
+wlee030@hammer $ wc < testing > testing1
+~/rshell
+wlee030@hammer $ cat testing1
+2 2 9
+~/rshell
+wlee030@hammer $ testing | testing1
+bash: ./testing1: Permission denied
+./testing: line 1: hi: command not found
+./testing: line 2: hello: command not found
+~/rshell
+wlee030@hammer $ exit
+exit
+
+Script done on Mon 23 Feb 2015 01:49:44 AM PST
