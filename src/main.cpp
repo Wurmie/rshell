@@ -442,6 +442,13 @@ int isRedir(std::string checkStr)
 		return -1;
 }
 
+void handler(int signal)
+{
+	if(signal == SIGINT)
+		raise(SIGTSTP);
+	else if(signal == SIGTSTP)
+		//stuff
+}
 int main()
 {
 	std::string input;		//string value to get input
@@ -449,7 +456,8 @@ int main()
 	char username[100];		//get username from terminal
 	gethostname(hostname,100);
 	getlogin_r(username,100);
-	
+
+	if(SIG_ERR == signal(SIGINT, handler));	
 	while(1)			//run until exit(1)
 	{
 		std::cout << username << "@" << hostname << "$"; //output beg
