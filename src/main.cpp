@@ -219,7 +219,28 @@ void getPATH(char** path)
 		perror("error getting path");
 		exit(1);
 	}
+	//split the path up into seperating :'s using tokenizing
+	else
+	{
+		char *tok = strtok(thePath,":");
+		
+		std::vector<std::string> commandPaths;
 
+		while(tok != NULL)
+		{
+			commandPaths.push_back(tok);
+			tok = strtok(NULL,":");
+		}
+
+		//then get the path
+		for(size_t i = 0;i < commandPaths.size(); i++)
+		{
+			pathing = commandPaths.at(i) + "/" + path[0];
+			execv(pathing.c_str(), path);
+		}
+		perror("Error in EXECV instead of EXECVP");
+		exit(1);
+	}
 }
 
 bool syscalls(std::vector<char*> command)
