@@ -13,6 +13,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+//FUCK IT. NOT PASSING IN MORE VARIABLES.
+int child = 0;
+int parent = -1;
+
 bool doubleRedirection(std::vector<char*> command2, char* outputFile,char* inputFile,int whichDir)
 {
 	int status;
@@ -26,6 +30,7 @@ bool doubleRedirection(std::vector<char*> command2, char* outputFile,char* input
 	
 	
 	int pid = fork();
+	child = pid;
 	if(pid < 0){
 		perror("error with fork(third child) ");
 		exit(1);
@@ -129,6 +134,7 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
         //now argv has everything in command    
 	
         int pid = fork();
+	child = pid;
         if(pid < 0){
                 perror("error with fork(child) ");
                 exit(1);
@@ -203,9 +209,56 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
                 return false;	
 }
 
+//place to do execv LOL
+void getPATH(char** path)
+{
+	std::string pathing = "-";
+	char *thePath = getenv("PATH");
+	if(thePath == NULL)
+	{
+		perror("error getting path");
+		exit(1);
+	}
+
+}
+
 bool syscalls(std::vector<char*> command)
 {
-	int status;
+	int status = 0;
+	std::string makeComString = command[0];
+/*	if(makeComString.compare("fg") == 0)
+	{
+		std::cout << "lol";
+	}
+	else if(makeComString.compare("bg") == 0)
+	{
+		std::cout << "wtf";
+	}*/
+
+	if(makeComString.compare("cd") == 0)
+	{
+		//nothing after cd LOL
+		if(command.size() < 2)
+		{
+			//by itself. we dont have to implement the home cd function. fuck yeah
+			std::cout << "DONT HAVE TO IMPLEMENT THIS!!!!!" << std::endl;
+			status = -1;
+		}
+		else
+		{
+			//make next word a string
+			makeComString = command[1];
+			if(chdir(command[1]) == -1)
+			{
+				perror("CD ERROR HAHA");
+				status = -1;
+			}
+			else
+				status = 0;
+		}
+		return status;
+	}
+
 	int argc = command.size()+1;				//size of argv
 	char **argv = new char*[argc];			//make argv pointer pointer for execvp.
 	for(int a = 0;a < argc-1;a++)			//shove everything in command into argv
@@ -215,16 +268,14 @@ bool syscalls(std::vector<char*> command)
 	argv[argc-1] = '\0';
 	//now argv has everything in command	
 	int pid = fork();
+	child = pid;
 	if(pid < 0){
 		perror("error with fork(child) ");
 		exit(1);
 	}
 	else if(pid == 0){		//child process running
-		if(execvp(argv[0],argv) == -1)
-		{	
-			perror("There was an error in execvp. ");
-		}
-		exit(1);		//kill child
+		//Need to do PATHING. CHANGE EXECVP
+		getPATH(argv);
 	}
 	else{ 				//in parent
 		if(waitpid(pid,&status,0) == -1){
@@ -442,29 +493,57 @@ int isRedir(std::string checkStr)
 		return -1;
 }
 
-void handler(int signal)
+void handler(int i)
 {
-	if(signal == SIGINT)
-		raise(SIGTSTP);
-	else if(signal == SIGTSTP)
-		//stuff
+	//if ^C, current foreground job should interrupt
+	if(i == SIGINT)
+	{
+		if(child > 1)
+		{
+			if(kill(child,SIGINT) == -1)
+				perror("cannot kill your child");
+		}
+		else
+			std::cerr << "You inside your parent yo";
+	}
+	//^Z, should pause foreground process
+	else if(i == SIGTSTP)
+	{
+		if(kill(child,SIGTSTP))
+			//LOL gotta pause the child? WAH DA FA?
+			perror("cannot pause your child");
+	}		
 }
+
 int main()
 {
+	//^C
+	parent = getpid();
+	if(SIG_ERR == signal(SIGINT,handler))
+	{
+		perror("^C error");
+		exit(1);
+	}
+	//^Z
+	/*if(SIG_ERR == signal(SIGTSTP,handler))
+	{
+		perror("^Z error");
+		exit(1);
+	}*/
+	
 	std::string input;		//string value to get input
 	char hostname[100];		//get the hostname from terminal
 	char username[100];		//get username from terminal
 	gethostname(hostname,100);
 	getlogin_r(username,100);
 
-	if(SIG_ERR == signal(SIGINT, handler));	
 	while(1)			//run until exit(1)
 	{
 		std::cout << username << "@" << hostname << "$"; //output beg
 		getline(std::cin,input);			//get input
 			
 		addSpaces(input);
-
+		
 		if(input.size() != 0)
 		{
 			char *tok = strtok(const_cast<char*>(input.c_str())," "); //will break the words if not a space
