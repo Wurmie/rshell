@@ -40,6 +40,39 @@ wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030$pwd
 wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030$cd rshell
 wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030/rshell$pwd
 /class/classes/wlee030/rshell
+wurmie@monkeynader:~/home/wurmie/rshell$cd /bin
+wurmie@monkeynader:~/bin$ls
+bash		      dnsdomainname  loginctl	       ntfsls			stty
+bunzip2		      domainname     lowntfs-3g        ntfsmftalloc		su
+busybox		      dumpkeys	     ls		       ntfsmove			sync
+bzcat		      echo	     lsblk	       ntfstruncate		tailf
+bzcmp		      ed	     lsmod	       ntfswipe			tar
+bzdiff		      efibootmgr     mkdir	       open			tempfile
+bzegrep		      egrep	     mknod	       openvt			touch
+bzexe		      false	     mktemp	       pidof			true
+bzfgrep		      fgconsole      more	       ping			udevadm
+bzgrep		      fgrep	     mount	       ping6			ulockmgr_server
+bzip2		      findmnt	     mountpoint        plymouth			umount
+bzip2recover	      fuser	     mt		       plymouth-upstart-bridge	uname
+bzless		      fusermount     mt-gnu	       ps			uncompress
+bzmore		      getfacl	     mv		       pwd			unicode_start
+cat		      grep	     nano	       rbash			vdir
+chacl		      gunzip	     nc		       readlink			vmmouse_detect
+chgrp		      gzexe	     nc.openbsd        red			which
+chmod		      gzip	     netcat	       rm			whiptail
+chown		      hostname	     netstat	       rmdir			ypdomainname
+chvt		      ip	     nisdomainname     rnano			zcat
+cp		      kbd_mode	     ntfs-3g	       running-in-container	zcmp
+cpio		      kill	     ntfs-3g.probe     run-parts		zdiff
+dash		      kmod	     ntfs-3g.secaudit  sed			zegrep
+date		      less	     ntfs-3g.usermap   setfacl			zfgrep
+dbus-cleanup-sockets  lessecho	     ntfscat	       setfont			zforce
+dbus-daemon	      lessfile	     ntfsck	       setupcon			zgrep
+dbus-uuidgen	      lesskey	     ntfscluster       sh			zless
+dd		      lesspipe	     ntfscmp	       sh.distrib		zmore
+df		      ln	     ntfsdump_logfile  sleep			znew
+dir		      loadkeys	     ntfsfix	       ss
+dmesg		      login	     ntfsinfo	       static-sh
 wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030/rshell$
 wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030/rshell$# commands from different directories
 wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030/rshell$

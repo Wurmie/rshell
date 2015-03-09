@@ -4,7 +4,8 @@ cd ..
 pwd
 cd rshell
 pwd
-
+cd /bin
+pwd
 # commands from different directories
 
 # from /usr/bin:
