@@ -304,6 +304,7 @@ bool syscalls(std::vector<char*> command)
 
 	if(makeComString.compare("cd") == 0)
 	{
+		
 		//nothing after cd LOL
 		if(command.size() < 2)
 		{
@@ -569,10 +570,10 @@ void handler(int i)
 		if(child > 1)
 		{
 			if(kill(child,SIGINT) == -1)
-				perror("cannot kill your child");
+				perror("^C error");
 		}
 		else
-			std::cerr << "You inside your parent yo";
+			std::cerr << "EXIT to end";
 	}
 	//^Z, should pause foreground process
 	else if(i == SIGTSTP)
@@ -604,7 +605,13 @@ int main()
 
 	while(1)			//run until exit(1)
 	{
-		std::cout << username << "@" << hostname << "$"; //output beg
+		char currFold[BUFSIZ];
+		if(getcwd(currFold,sizeof(currFold)) == NULL)
+		{
+			perror("ERROR IN CURRENT FOLDER LOL");
+			exit(1);
+		}
+		std::cout << username << "@" << hostname << ":~" << currFold <<"$"; //output beg
 		getline(std::cin,input);			//get input
 			
 		addSpaces(input);
