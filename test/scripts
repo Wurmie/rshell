@@ -18,4 +18,9 @@ ls >/dev/null
 
 # from /sbin:
 mkfs --help >/dev/null
+
+#^C inside shell
+cat
+^C
+
 exit

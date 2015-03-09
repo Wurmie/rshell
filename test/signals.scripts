@@ -92,6 +92,8 @@ Usage: mkfs.ext2 [-c|-l filename] [-b block-size] [-f fragment-size]
 	[-T fs-type] [-U UUID] [-jnqvFKSV] device [blocks-count]
 wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030/rshell$cat^M
 ^C^M
+wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030/rshell$^C
+EXIT to end^C
 wlee030@hammer.cs.ucr.edu:~/class/classes/wlee030/rshell$exit
 
 ================================================================================
