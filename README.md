@@ -8,7 +8,9 @@ For ls, it basically mirrors the BASH terminal ls for -R, -a, -l and its paths.
 Run the program in a linux terminal. This program will not guarantee to run properly even in a linux terminal.
 Even though echo and ls are different commands, when testing, they are the same thing.
 
-To run the program for RShell:
+There is a scripts in test folder that I used when testing for test cases from Mevens.
+
+To run the program for RShell(hw0,hw2,hw3):
 
 ``$git clone https://github.com/Wurmie/rshell.git``
 
@@ -61,7 +63,10 @@ Need to run the program:
 rshell.cpp
 
 	* tab does not work
+
 	* piping does not work
+	
+	* ^Z does not work
 
 ls.cpp
 
