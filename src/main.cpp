@@ -17,9 +17,68 @@
 int child = 0;
 int parent = -1;
 
+void getPATH(char** path)
+{
+        std::string pathing = "-";
+        char *thePath = getenv("PATH");
+        if(thePath == NULL)
+        {
+                perror("error getting path");
+                exit(1);
+        }
+        //split the path up into seperating :'s using tokenizing
+        else
+        {
+                char *tok = strtok(thePath,":");
+
+                std::vector<std::string> commandPaths;
+
+                while(tok != NULL)
+                {
+                        commandPaths.push_back(tok);
+                        tok = strtok(NULL,":");
+                }
+
+                //then get the path
+                for(size_t i = 0;i < commandPaths.size(); i++)
+                {
+                        pathing = commandPaths.at(i) + "/" + path[0];
+                        execv(pathing.c_str(), path);
+                }
+                perror("Error in EXECV instead of EXECVP");
+                exit(1);
+        }
+}
+
 bool doubleRedirection(std::vector<char*> command2, char* outputFile,char* inputFile,int whichDir)
 {
 	int status;
+	std::string makeComString = command2[0];
+
+        if(makeComString.compare("cd") == 0)
+        {
+                //nothing after cd LOL
+                if(command2.size() < 2)
+                {
+                        //by itself. we dont have to implement the home cd function. fuck yeah
+                        std::cout << "DONT HAVE TO IMPLEMENT THIS!!!!!" << std::endl;
+                        status = -1;
+                }
+                else
+                {
+                        //make next word a string
+                        makeComString = command2[1];
+                        if(chdir(command2[1]) == -1)
+                        {
+                                perror("CD ERROR HAHA");
+                                status = -1;
+                        }
+                        else
+                                status = 0;
+                }
+                return status;
+        }
+
 	int argc = command2.size()+1;
 	char **argv = new char*[argc];
 
@@ -73,9 +132,7 @@ bool doubleRedirection(std::vector<char*> command2, char* outputFile,char* input
 		if(dupTwo == -1)
 			perror("DUP2 Error");
 
-		if(execvp(argv[0],argv) == -1)
-			perror("error in execvp2");
-
+		getPATH(argv);
 		if(whichDir != 2)
 			dup2(newOut,1);
 		else
@@ -100,6 +157,33 @@ bool doubleRedirection(std::vector<char*> command2, char* outputFile,char* input
 
 bool singleRedirection(std::vector<char*> command1, int whichDir)
 {
+	int status;
+	std::string makeComString = command1[0];
+
+        if(makeComString.compare("cd") == 0)
+        {
+                //nothing after cd LOL
+                if(command1.size() < 2)
+                {
+                        //by itself. we dont have to implement the home cd function. fuck yeah
+                        std::cout << "DONT HAVE TO IMPLEMENT THIS!!!!!" << std::endl;
+                        status = -1;
+                }
+                else
+                {
+                        //make next word a string
+                        makeComString = command1[1];
+                        if(chdir(command1[1]) == -1)
+                        {
+                                perror("CD ERROR HAHA");
+                                status = -1;
+                        }
+                        else
+                                status = 0;
+                }
+                return status;
+        }
+
 	size_t newplace = 0;
         size_t find = false;
 
@@ -120,7 +204,6 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
 //	std::string  theFile = command1[newFileplace];
 //	std::cout << command1[newFileplace--] << " ";
 
-	int status;
         int argc = newplace--;                            //size of argv
         char **argv = new char*[argc];                  //make argv pointer pointer for execvp.
         for(int a = 0;a < argc;a++)                   //shove everything in command into argv
@@ -181,10 +264,7 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
 			perror("DUP2222 ERRORR");
 		
 		//EXECVP
-                if(execvp(argv[0],argv) == -1)
-                {
-                        perror("There was an error in execvp1. ");
-                }
+                getPATH(argv);
 		//END EXECVP
 		if(whichDir != 2)	
 			dup2(newOut,1);
@@ -207,40 +287,6 @@ bool singleRedirection(std::vector<char*> command1, int whichDir)
                 return true;
         else
                 return false;	
-}
-
-//place to do execv LOL
-void getPATH(char** path)
-{
-	std::string pathing = "-";
-	char *thePath = getenv("PATH");
-	if(thePath == NULL)
-	{
-		perror("error getting path");
-		exit(1);
-	}
-	//split the path up into seperating :'s using tokenizing
-	else
-	{
-		char *tok = strtok(thePath,":");
-		
-		std::vector<std::string> commandPaths;
-
-		while(tok != NULL)
-		{
-			commandPaths.push_back(tok);
-			tok = strtok(NULL,":");
-		}
-
-		//then get the path
-		for(size_t i = 0;i < commandPaths.size(); i++)
-		{
-			pathing = commandPaths.at(i) + "/" + path[0];
-			execv(pathing.c_str(), path);
-		}
-		perror("Error in EXECV instead of EXECVP");
-		exit(1);
-	}
 }
 
 bool syscalls(std::vector<char*> command)
@@ -519,6 +565,7 @@ void handler(int i)
 	//if ^C, current foreground job should interrupt
 	if(i == SIGINT)
 	{
+		std::cout << std::endl;
 		if(child > 1)
 		{
 			if(kill(child,SIGINT) == -1)
@@ -541,10 +588,7 @@ int main()
 	//^C
 	parent = getpid();
 	if(SIG_ERR == signal(SIGINT,handler))
-	{
 		perror("^C error");
-		exit(1);
-	}
 	//^Z
 	/*if(SIG_ERR == signal(SIGTSTP,handler))
 	{
